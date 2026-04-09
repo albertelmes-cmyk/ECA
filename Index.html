@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ECA Design — Electronics Design Firm </title>
+<link rel="icon" href="favpic.svg" type="image/svg+xml">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #f8f8f6;
+    --gray: #8a8a8a;
+    --border: #d0d0d0;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', Helvetica Neue, sans-serif;
+    background: var(--white);
+    color: var(--black);
+    font-weight: 400;
+    overflow-x: hidden;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2.5rem;
+    mix-blend-mode: difference;
+  }
+
+.nav-logo {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 30px;
+  font-weight: 700; /* THIS makes it bold */
+  letter-spacing: 0.18em;
+  color: var(--white);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+  .nav-links a {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: var(--white);
+    text-decoration: none;
+    text-transform: uppercase;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+
+  .nav-links a:hover { opacity: 1; }
+
+  .ticker {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--black);
+    padding: 0.5rem 0;
+    overflow: hidden;
+  }
+
+  .ticker-track {
+    display: flex;
+    white-space: nowrap;
+    animation: ticker 20s linear infinite;
+  }
+
+  .ticker-item {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--white);
+    text-transform: uppercase;
+    padding: 0 2rem;
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+
+  .ticker-dot {
+    font-size: 11px;
+    color: var(--white);
+    opacity: 0.3;
+    flex-shrink: 0;
+    padding: 0 0.5rem;
+  }
+
+  @keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  #hero {
+    min-height: 100vh;
+    background: var(--black);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2.5rem 2.5rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  .hero-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-headline {
+    font-size: clamp(3rem, 9vw, 9rem);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 3rem;
+    max-width: 14ch;
+  }
+
+  .hero-headline em {
+    font-style: normal;
+    border-bottom: 2px solid rgba(255,255,255,0.3);
+  }
+
+  .hero-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+  }
+
+  .hero-desc {
+    max-width: 38ch;
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--white);
+    padding: 1rem 2rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.2s;
+    flex-shrink: 0;
+  }
+
+  .hero-cta:hover { opacity: 0.85; }
+
+  .scroll-hint {
+    position: absolute;
+    right: 2.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .scroll-hint span {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    writing-mode: vertical-rl;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: rgba(255,255,255,0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scroll-line::after {
+    content: '';
+    position: absolute;
+    top: -100%; left: 0;
+    width: 100%; height: 100%;
+    background: white;
+    animation: scrollLine 1.8s ease-in-out infinite;
+  }
+
+  @keyframes scrollLine {
+    0% { top: -100%; }
+    100% { top: 100%; }
+  }
+
+  section {
+    padding: 6rem 2.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4rem;
+  }
+
+  .section-tag {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+
+  .section-num {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--gray);
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 4rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    max-width: 20ch;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-body {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--gray);
+    max-width: 55ch;
+    font-weight: 300;
+  }
+
+  #specialties { background: var(--white); }
+
+  .specialties-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .specialties-grid.visible { opacity: 1; transform: translateY(0); }
+
+  .specialty-card {
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .specialty-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: var(--black);
+    transition: width 0.4s ease;
+  }
+
+  .specialty-card:hover::before { width: 100%; }
+  .specialty-card:hover { background: #f0f0ee; }
+
+  .specialty-num {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--gray);
+    margin-bottom: 2rem;
+    display: block;
+  }
+
+  .specialty-title {
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.25rem;
+    line-height: 1.2;
+  }
+
+  .specialty-desc {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--gray);
+    font-weight: 300;
+  }
+
+  .specialty-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+
+  .tag {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    padding: 0.3rem 0.7rem;
+    color: var(--gray);
+  }
+
+  #projects {
+    background: var(--black);
+    color: var(--white);
+    border-top: none;
+  }
+
+  #projects .section-tag { color: rgba(255,255,255,0.4); }
+  #projects .section-num { color: rgba(255,255,255,0.4); }
+  #projects .section-title { color: var(--white); }
+  #projects .section-body { color: rgba(255,255,255,0.45); }
+
+  .projects-list {
+    border-top: 1px solid rgba(255,255,255,0.12);
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .projects-list.visible { opacity: 1; transform: translateY(0); }
+
+  .project-item {
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    overflow: hidden;
+  }
+
+  .project-trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.2s;
+  }
+
+  .project-trigger:hover { opacity: 0.7; }
+
+  .project-trigger-left {
+    display: flex;
+    align-items: baseline;
+    gap: 2rem;
+  }
+
+  .project-index {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.3);
+    min-width: 2rem;
+  }
+
+  .project-name {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+    color: var(--white);
+  }
+
+  .project-category {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .project-arrow {
+    width: 24px;
+    height: 24px;
+    position: relative;
+    flex-shrink: 0;
+    transition: transform 0.35s ease;
+  }
+
+  .project-arrow::before, .project-arrow::after {
+    content: '';
+    position: absolute;
+    background: rgba(255,255,255,0.5);
+  }
+
+  .project-arrow::before { width: 12px; height: 1px; top: 12px; left: 6px; }
+  .project-arrow::after { width: 1px; height: 12px; top: 6px; left: 12px; transition: transform 0.35s ease; }
+
+  .project-item.open .project-arrow { transform: rotate(45deg); }
+
+  .project-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .project-item.open .project-body { max-height: 400px; }
+
+  .project-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    padding: 0 0 3rem 4rem;
+  }
+
+  .project-desc {
+    font-size: 14px;
+    line-height: 1.75;
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+  }
+
+  .project-meta { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .project-meta-row { display: flex; flex-direction: column; gap: 0.25rem; }
+
+  .meta-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .meta-value {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    font-weight: 300;
+  }
+
+  /* CONTACT */
+  #contact { background: var(--white); }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  .contact-cta-link {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--black);
+    padding: 1rem 2rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.2s;
+    margin-top: 2.5rem;
+  }
+
+  .contact-cta-link:hover { opacity: 0.8; }
+
+  .social-list { display: flex; flex-direction: column; }
+
+  .social-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--black);
+    position: relative;
+    overflow: hidden;
+    transition: opacity 0.2s;
+  }
+
+  .social-link:first-child { border-top: 1px solid var(--border); }
+  .social-link:hover { opacity: 0.55; }
+
+  .social-link::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0;
+    width: 0; height: 1px;
+    background: var(--black);
+    transition: width 0.4s ease;
+  }
+
+  .social-link:hover::after { width: 100%; }
+
+  .social-label {
+    font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+    font-weight: 300;
+    letter-spacing: -0.01em;
+  }
+
+  .social-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .social-handle {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--gray);
+    text-transform: uppercase;
+  }
+
+  .social-arr {
+    font-size: 16px;
+    color: var(--gray);
+    transition: transform 0.25s ease;
+    display: inline-block;
+  }
+
+  .social-link:hover .social-arr { transform: translate(3px, -3px); }
+
+  /* FOOTER */
+  footer {
+    background: var(--black);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 2rem 2.5rem 5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-left { display: flex; flex-direction: column; gap: 0.4rem; }
+
+  .footer-brand {
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  .footer-copy {
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.05em;
+  }
+
+  .footer-right { display: flex; align-items: center; gap: 2rem; }
+
+  .footer-soc {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-soc:hover { color: rgba(255,255,255,0.9); }
+
+  .footer-cta {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--white);
+    padding: 0.85rem 1.75rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.2s;
+  }
+
+  .footer-cta:hover { opacity: 0.85; }
+
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1.25rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero { padding: 2rem 1.5rem 5rem; }
+    section { padding: 4rem 1.5rem; }
+    .specialties-grid { grid-template-columns: 1fr; }
+    .project-content { grid-template-columns: 1fr; gap: 2rem; padding-left: 2rem; }
+    .project-name { font-size: 1.4rem; }
+    .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+    footer { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+    .scroll-hint { display: none; }
+    .hero-bottom { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">ECA.</a>
+  <ul class="nav-links">
+    <li><a href="#specialties">Specialties</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-grid-overlay"></div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+  <p class="hero-label">Electronics Design Firm — London, UK</p>
+  <h1 class="hero-headline">Hardware<br>designed<br><em>precisely.</em></h1>
+  <div class="hero-bottom">
+    <p class="hero-desc">We engineer electronics from concept to production. PCB design, RF systems, and IoT architecture — built for the real world with no corners cut.</p>
+    <a href="mailto:bertie@ecadesign.co.uk" class="hero-cta">Get in contact</a>
+  </div>
+</section>
+
+<section id="specialties">
+  <div class="section-header fade-up">
+    <p class="section-tag">Specialties</p>
+    <span class="section-num">(02)</span>
+  </div>
+  <div class="fade-up" style="margin-bottom: 4rem;">
+    <h2 class="section-title">What we do best.</h2>
+    <p class="section-body">Every board tells a story. We work with you to ensure precision, reliability, and long-term performance. From feasibility trials to reliable products at scale.</p>
+  </div>
+  <div class="specialties-grid">
+    <div class="specialty-card">
+      <span class="specialty-num">01</span>
+      <h3 class="specialty-title">PCB Design</h3>
+      <p class="specialty-desc">Multi-layer board design from schematic to Gerber. We design for manufacturability, thermal performance, and signal integrity — ensuring your product survives production at scale.</p>
+      <div class="specialty-tags">
+        <span class="tag">Multi-layer</span><span class="tag">High-speed</span><span class="tag">DFM</span><span class="tag">Thermal</span>
+      </div>
+    </div>
+    <div class="specialty-card">
+      <span class="specialty-num">02</span>
+      <h3 class="specialty-title">RF Design</h3>
+      <p class="specialty-desc">Antenna design, impedance matching, and RF front-end architecture across Sub-GHz, 2.4 GHz and 5 GHz. We model, simulate, and validate.</p>
+      <div class="specialty-tags">
+        <span class="tag">Antenna</span><span class="tag">Sub-GHz</span><span class="tag">Bluetooth</span><span class="tag">Wi-Fi</span>
+      </div>
+    </div>
+    <div class="specialty-card">
+      <span class="specialty-num">03</span>
+      <h3 class="specialty-title">IoT Systems</h3>
+      <p class="specialty-desc">End-to-end IoT hardware architecture from sensor nodes to gateway design. Low-power optimisation, secure connectivity, and firmware-ready platforms. Turnkey development — Hardware, Firmware and Production Software in-house.</p>
+      <div class="specialty-tags">
+        <span class="tag">Low-power</span><span class="tag">Edge compute</span><span class="tag">Mesh</span><span class="tag">LPWAN</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-header fade-up">
+    <p class="section-tag">Previous Projects</p>
+    <span class="section-num">(03)</span>
+  </div>
+  <div class="fade-up" style="margin-bottom: 4rem;">
+    <h2 class="section-title">Work that shipped.</h2>
+    <p class="section-body">A selection of past projects spanning industrial, consumer, and medical electronics — each one designed to a precise specification and delivered on time.</p>
+  </div>
+  <div class="projects-list">
+
+    <div class="project-item">
+      <div class="project-trigger" onclick="toggleProject(this)">
+        <div class="project-trigger-left">
+          <span class="project-index">01</span>
+          <span class="project-name">UVC Disinfection</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:2rem;">
+          <span class="project-category">Medical Device</span>
+          <div class="project-arrow"></div>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-content">
+          <p class="project-desc">A compact UVC eye-treatment device integrating a microcontroller, display, and camera to precisely control exposure while ensuring patient safety. Strict power monitoring and feedback systems maintain regulatory compliance, enabling accurate, repeatable disinfection cycles in a low-power design suitable for clinical and home use.</p>
+          <div class="project-meta">
+            <div class="project-meta-row"><span class="meta-label">Discipline</span><span class="meta-value">PCB Design, Medical, Firmware Interface</span></div>
+            <div class="project-meta-row"><span class="meta-label">Protocols</span><span class="meta-value">MIPI-CSI, MIPI-DSI, I2C</span></div>
+            <div class="project-meta-row"><span class="meta-label">Form Factor</span><span class="meta-value">Multi-board, Compact</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-item">
+      <div class="project-trigger" onclick="toggleProject(this)">
+        <div class="project-trigger-left">
+          <span class="project-index">02</span>
+          <span class="project-name">IoT Agricultural Monitoring</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:2rem;">
+          <span class="project-category">RF / Connectivity</span>
+          <div class="project-arrow"></div>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-content">
+          <p class="project-desc">A low-power tree health monitoring system using vibration sensing to capture changes in trunk resonance and structural integrity. Data is transmitted via LoRa to a central gateway, enabling scalable, long-range deployment with multi-year battery operation and robust hardware for outdoor environments.</p>
+          <div class="project-meta">
+            <div class="project-meta-row"><span class="meta-label">Discipline</span><span class="meta-value">RF Design, Multi-layer PCB</span></div>
+            <div class="project-meta-row"><span class="meta-label">Protocols</span><span class="meta-value">Wi-Fi 6, BT 5.2, LoRa</span></div>
+            <div class="project-meta-row"><span class="meta-label">Form Factor</span><span class="meta-value">Waterproof, 5-year deployment</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-item">
+      <div class="project-trigger" onclick="toggleProject(this)">
+        <div class="project-trigger-left">
+          <span class="project-index">03</span>
+          <span class="project-name">Consumer Focus Timer</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:2rem;">
+          <span class="project-category">Consumer Electronics</span>
+          <div class="project-arrow"></div>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-content">
+          <p class="project-desc">A compact focus timer that visualises elapsed time through a circular RGB LED array. Aggressive sleep modes and efficient LED driving achieve extended battery life. The hardware and firmware were optimised for low-cost, high-volume manufacture with a minimal component count supporting scalable production.</p>
+          <div class="project-meta">
+            <div class="project-meta-row"><span class="meta-label">Discipline</span><span class="meta-value">Low-power, Battery, Cost reduction</span></div>
+            <div class="project-meta-row"><span class="meta-label">Connectivity</span><span class="meta-value">Bluetooth LE 5.1, 2.4 GHz</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-item">
+      <div class="project-trigger" onclick="toggleProject(this)">
+        <div class="project-trigger-left">
+          <span class="project-index">04</span>
+          <span class="project-name">Flood Detection</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:2rem;">
+          <span class="project-category">Industrial IoT</span>
+          <div class="project-arrow"></div>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-content">
+          <p class="project-desc">A low-power IoT flood detection system using float switches to monitor water levels and transmit alerts to a cloud platform. Efficient wireless communication and scalable, cost-effective hardware enable widespread deployment with real-time notifications.</p>
+          <div class="project-meta">
+            <div class="project-meta-row"><span class="meta-label">Discipline</span><span class="meta-value">Low-power, Battery, Cost reduction</span></div>
+            <div class="project-meta-row"><span class="meta-label">Connectivity</span><span class="meta-value">Wi-Fi, Sensing</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header fade-up">
+    <p class="section-tag">Contact</p>
+    <span class="section-num">(04)</span>
+  </div>
+  <div class="contact-grid">
+    <div class="fade-up">
+      <h2 class="section-title">Let's build something together.</h2>
+      <p class="section-body">Have a project in mind? Reach out and we'll get back to you within one business day.</p>
+      <a href="mailto:bertie@ecadesign.co.uk" class="contact-cta-link">bertie@ecadesign.co.uk &nbsp;↗</a>
+    </div>
+    <div class="fade-up">
+      <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:0;">Find us online</p>
+      <div class="social-list">
+        <a href="https://www.linkedin.com/company/ecadesign" target="_blank" class="social-link">
+          <span class="social-label">LinkedIn</span>
+          <div class="social-right">
+            <span class="social-handle">ECA Design</span>
+            <span class="social-arr">↗</span>
+          </div>
+        </a>
+        <a href="https://www.instagram.com/ecadesign" target="_blank" class="social-link">
+          <span class="social-label">Instagram</span>
+          <div class="social-right">
+            <span class="social-handle">@ecadesign</span>
+            <span class="social-arr">↗</span>
+          </div>
+        </a>
+        <a href="mailto:bertie@ecadesign.co.uk" class="social-link">
+          <span class="social-label">Email</span>
+          <div class="social-right">
+            <span class="social-handle">bertie@ecadesign.co.uk</span>
+            <span class="social-arr">↗</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">
+    <span class="footer-brand">ECA Design</span>
+    <span class="footer-copy">© 2025 ECA Design Ltd. All rights reserved.</span>
+        <span class="footer-copy">info@ecadesign.co.uk</span>
+  </div>
+  <div class="footer-right">
+    <a href="https://www.linkedin.com/company/ecadesign" target="_blank" class="footer-soc">LinkedIn</a>
+    <a href="https://www.instagram.com/ecadesign" target="_blank" class="footer-soc">Instagram</a>
+    <a href="mailto:bertie@ecadesign.co.uk" class="footer-cta">Start a project</a>
+  </div>
+</footer>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">PCB Design</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">RF Engineering</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">IoT Systems</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Signal Integrity</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Antenna Design</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Low-power Design</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">EMC Compliance</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">PCB Design</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">RF Engineering</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">IoT Systems</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Signal Integrity</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Antenna Design</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Low-power Design</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">EMC Compliance</span><span class="ticker-dot">·</span>
+  </div>
+</div>
+
+<script>
+  function toggleProject(trigger) {
+    const item = trigger.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.project-item.open').forEach(el => el.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.fade-up, .specialties-grid, .projects-list').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.specialty-card').forEach((card, i) => {
+    card.style.transitionDelay = `${i * 0.12}s`;
+  });
+</script>
+</body>
+</html>
