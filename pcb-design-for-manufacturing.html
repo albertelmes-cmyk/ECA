@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PCB Design for Manufacturing (DFM) UK — ECA Design | Electronics Design for Production</title>
+  <meta name="description" content="ECA Design delivers PCB design for manufacturing (DFM) for UK companies preparing for production. BOM optimisation, stackup planning, assembly yield improvement, and pre-production validation — designed to build reliably at scale.">
+  <link rel="icon" href="favpic.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://www.ecadesign.co.uk/pcb-design-for-manufacturing">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #f8f8f6;
+      --gray: #8a8a8a;
+      --border: #d0d0d0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', Helvetica Neue, sans-serif;
+      background: var(--white);
+      color: var(--black);
+      font-weight: 400;
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2.5rem;
+      mix-blend-mode: difference;
+    }
+
+    .nav-logo {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+    .nav-links a {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+
+    .nav-links a:hover { opacity: 1; }
+
+    .ticker {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--black);
+      padding: 0.5rem 0;
+      overflow: hidden;
+    }
+
+    .ticker-track {
+      display: flex;
+      white-space: nowrap;
+      animation: ticker 24s linear infinite;
+    }
+
+    .ticker-item {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--white);
+      text-transform: uppercase;
+      padding: 0 2rem;
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    .ticker-dot {
+      font-size: 11px;
+      color: var(--white);
+      opacity: 0.3;
+      flex-shrink: 0;
+      padding: 0 0.5rem;
+    }
+
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    #hero {
+      min-height: 100vh;
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2.5rem 2.5rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-headline {
+      font-size: clamp(3rem, 8.5vw, 8.5rem);
+      font-weight: 300;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-bottom: 3rem;
+      max-width: 16ch;
+    }
+
+    .hero-headline em {
+      font-style: normal;
+      border-bottom: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .hero-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 2rem;
+    }
+
+    .hero-desc {
+      max-width: 42ch;
+      font-size: 14px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.55);
+      font-weight: 300;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--white);
+      padding: 1rem 2rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+      flex-shrink: 0;
+    }
+
+    .hero-cta:hover { opacity: 0.85; }
+
+    .scroll-hint {
+      position: absolute;
+      right: 2.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .scroll-hint span {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      writing-mode: vertical-rl;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background: rgba(255,255,255,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: -100%; left: 0;
+      width: 100%; height: 100%;
+      background: white;
+      animation: scrollLine 1.8s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0% { top: -100%; }
+      100% { top: 100%; }
+    }
+
+    section {
+      padding: 6rem 2.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 4rem;
+    }
+
+    .section-tag {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    .section-num {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 4rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      max-width: 22ch;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-body {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--gray);
+      max-width: 55ch;
+      font-weight: 300;
+    }
+
+    /* SERVICES */
+    #services { background: var(--white); }
+
+    .specialties-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .specialties-grid.visible { opacity: 1; transform: translateY(0); }
+
+    .specialty-card {
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .specialty-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--black);
+      transition: width 0.4s ease;
+    }
+
+    .specialty-card:hover::before { width: 100%; }
+    .specialty-card:hover { background: #f0f0ee; }
+
+    .specialty-num {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--gray);
+      margin-bottom: 2rem;
+      display: block;
+    }
+
+    .specialty-title {
+      font-size: 1.5rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.25rem;
+      line-height: 1.2;
+    }
+
+    .specialty-desc {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--gray);
+      font-weight: 300;
+    }
+
+    .specialty-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 2rem;
+    }
+
+    .tag {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.7rem;
+      color: var(--gray);
+    }
+
+    /* PROBLEMS */
+    #problems {
+      background: var(--black);
+      color: var(--white);
+      border-top: none;
+    }
+
+    #problems .section-tag { color: rgba(255,255,255,0.4); }
+    #problems .section-num { color: rgba(255,255,255,0.4); }
+    #problems .section-title { color: var(--white); }
+    #problems .section-body { color: rgba(255,255,255,0.45); }
+
+    .problems-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      border-left: 1px solid rgba(255,255,255,0.12);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .problems-grid.visible { opacity: 1; transform: translateY(0); }
+
+    .problem-card {
+      border-right: 1px solid rgba(255,255,255,0.12);
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      padding: 3rem 2.5rem;
+      position: relative;
+    }
+
+    .problem-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 2px; height: 0;
+      background: var(--white);
+      transition: height 0.4s ease;
+    }
+
+    .problem-card:hover::after { height: 100%; }
+
+    .problem-icon {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.25);
+      margin-bottom: 1.75rem;
+      display: block;
+      text-transform: uppercase;
+    }
+
+    .problem-title {
+      font-size: 1.2rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+      line-height: 1.25;
+      color: var(--white);
+    }
+
+    .problem-desc {
+      font-size: 13px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.5);
+      font-weight: 300;
+    }
+
+    /* PROCESS */
+    #process { background: var(--white); }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .process-steps.visible { opacity: 1; transform: translateY(0); }
+
+    .process-step {
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      position: relative;
+    }
+
+    .step-num {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--gray);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .step-title {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+
+    .step-desc {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--gray);
+      font-weight: 300;
+    }
+
+    .step-arrow {
+      position: absolute;
+      top: 50%;
+      right: -12px;
+      transform: translateY(-50%);
+      font-size: 14px;
+      color: var(--border);
+      z-index: 1;
+      background: var(--white);
+      padding: 0.2rem;
+      line-height: 1;
+    }
+
+    .process-step:last-child .step-arrow { display: none; }
+
+    /* CASE STUDY */
+    #case-study {
+      background: var(--black);
+      color: var(--white);
+      border-top: none;
+    }
+
+    #case-study .section-tag { color: rgba(255,255,255,0.4); }
+    #case-study .section-num { color: rgba(255,255,255,0.4); }
+    #case-study .section-title { color: var(--white); }
+
+    .case-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .case-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .case-title {
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--white);
+      margin-bottom: 2rem;
+    }
+
+    .case-body {
+      font-size: 14px;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.55);
+      font-weight: 300;
+      margin-bottom: 2rem;
+    }
+
+    .case-meta-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      padding-top: 2.5rem;
+    }
+
+    .case-meta-item { display: flex; flex-direction: column; gap: 0.35rem; }
+
+    .case-meta-label {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .case-meta-value {
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      font-weight: 300;
+    }
+
+    .case-result {
+      border-left: 2px solid rgba(255,255,255,0.15);
+      padding-left: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .case-result-label {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .case-result-text {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    /* STAT ROW */
+    .stat-row {
+      display: flex;
+      gap: 4rem;
+      border-top: 1px solid var(--border);
+      padding-top: 3rem;
+      margin-top: 3rem;
+    }
+
+    .stat-item { display: flex; flex-direction: column; gap: 0.4rem; }
+
+    .stat-num {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    /* CTA */
+    #cta { background: var(--white); }
+
+    .cta-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 4rem;
+    }
+
+    .cta-cta-link {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: var(--black);
+      padding: 1rem 2rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+      flex-shrink: 0;
+    }
+
+    .cta-cta-link:hover { opacity: 0.8; }
+
+    .cta-note {
+      font-size: 12px;
+      color: var(--gray);
+      margin-top: 1rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* CONTACT */
+    #contact { background: var(--white); border-top: 1px solid var(--border); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .contact-cta-link {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: var(--black);
+      padding: 1rem 2rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+      margin-top: 2.5rem;
+    }
+
+    .contact-cta-link:hover { opacity: 0.8; }
+
+    .social-list { display: flex; flex-direction: column; }
+
+    .social-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--black);
+      position: relative;
+      overflow: hidden;
+      transition: opacity 0.2s;
+    }
+
+    .social-link:first-child { border-top: 1px solid var(--border); }
+    .social-link:hover { opacity: 0.55; }
+
+    .social-label {
+      font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+      font-weight: 300;
+      letter-spacing: -0.01em;
+    }
+
+    .social-right { display: flex; align-items: center; gap: 1.5rem; }
+
+    .social-handle {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-transform: uppercase;
+    }
+
+    .social-arr {
+      font-size: 16px;
+      color: var(--gray);
+      transition: transform 0.25s ease;
+      display: inline-block;
+    }
+
+    .social-link:hover .social-arr { transform: translate(3px, -3px); }
+
+    /* FOOTER */
+    footer {
+      background: var(--black);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 2rem 2.5rem 5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-left { display: flex; flex-direction: column; gap: 0.4rem; }
+
+    .footer-brand {
+      font-size: 13px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    .footer-copy {
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-right { display: flex; align-items: center; gap: 2rem; }
+
+    .footer-soc {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-soc:hover { color: rgba(255,255,255,0.9); }
+
+    .footer-cta {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--white);
+      padding: 0.85rem 1.75rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .footer-cta:hover { opacity: 0.85; }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* INLINE CALLOUT — DFM checklist strip */
+    .dfm-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+      margin-top: 4rem;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .dfm-strip.visible { opacity: 1; transform: translateY(0); }
+
+    .dfm-strip-item {
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 1.75rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .dfm-strip-label {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    .dfm-strip-value {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--black);
+      letter-spacing: -0.01em;
+    }
+
+    @media (max-width: 1024px) {
+      .process-steps { grid-template-columns: repeat(3, 1fr); }
+      .problems-grid { grid-template-columns: repeat(2, 1fr); }
+      .dfm-strip { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1.25rem 1.5rem; }
+      .nav-links { display: none; }
+      #hero { padding: 2rem 1.5rem 5rem; }
+      section { padding: 4rem 1.5rem; }
+      .specialties-grid { grid-template-columns: 1fr; }
+      .problems-grid { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr; }
+      .step-arrow { display: none; }
+      .dfm-strip { grid-template-columns: 1fr 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .case-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .cta-inner { flex-direction: column; align-items: flex-start; }
+      footer { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+      .scroll-hint { display: none; }
+      .hero-bottom { flex-direction: column; align-items: flex-start; }
+      .stat-row { gap: 2rem; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">ECA.</a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-overlay"></div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+  <p class="hero-label">PCB Design for Manufacturing — London, UK</p>
+  <h1 class="hero-headline">Designed<br>to build<br><em>at scale.</em></h1>
+  <div class="hero-bottom">
+    <p class="hero-desc">PCB design for manufacturing means more than passing DRC. It means stackups chosen for your fabricator, components placed for assembly yield, and a BOM that can actually be sourced. We close the gap between a working prototype and a design that builds reliably at production volume.</p>
+    <a href="mailto:info@ecadesign.co.uk" class="hero-cta">Start a project</a>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-header fade-up">
+    <p class="section-tag">DFM Services</p>
+    <span class="section-num">(02)</span>
+  </div>
+  <div class="fade-up" style="margin-bottom: 4rem;">
+    <h2 class="section-title">What design for manufacture actually involves.</h2>
+    <p class="section-body">DFM is not a checklist applied at the end of a project. It's a set of constraints that belong in every decision from stackup definition through component selection and final placement — before the first Gerber is ever sent to a fab.</p>
+    <div class="stat-row">
+      <div class="stat-item">
+        <span class="stat-num">100%</span>
+        <span class="stat-label">In-house design</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">0</span>
+        <span class="stat-label">Undocumented bodges</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">12+</span>
+        <span class="stat-label">Products to production</span>
+      </div>
+    </div>
+  </div>
+  <div class="specialties-grid">
+    <div class="specialty-card">
+      <span class="specialty-num">01</span>
+      <h3 class="specialty-title">DFM Review & Risk Assessment</h3>
+      <p class="specialty-desc">We systematically review existing designs against fabrication and assembly constraints — identifying copper clearances outside fab capability, annular rings at risk under drill tolerance, paste apertures too small for reliable print, and thermal relief decisions that will cause tombstoning or cold joints at volume. Every finding is documented with severity and a specific corrective action.</p>
+      <div class="specialty-tags">
+        <span class="tag">Fab capability review</span><span class="tag">Clearance audit</span><span class="tag">Solder paste</span><span class="tag">Thermal relief</span>
+      </div>
+    </div>
+    <div class="specialty-card">
+      <span class="specialty-num">02</span>
+      <h3 class="specialty-title">BOM & Cost Optimisation</h3>
+      <p class="specialty-desc">A BOM that works on a prototype does not automatically work in production. We audit component availability against live distributor stock, flag sole-sourced parts with no approved alternates, and identify opportunities to consolidate values or move to more available packages — reducing cost and supply chain risk simultaneously without changing any electrical function.</p>
+      <div class="specialty-tags">
+        <span class="tag">Availability audit</span><span class="tag">Alternate sourcing</span><span class="tag">Value consolidation</span><span class="tag">Cost reduction</span>
+      </div>
+    </div>
+    <div class="specialty-card">
+      <span class="specialty-num">03</span>
+      <h3 class="specialty-title">Stackup & Fabrication Planning</h3>
+      <p class="specialty-desc">Layer count, dielectric selection, copper weight, and controlled impedance specifications must be aligned to what your target fabricator can reliably produce at your volume and price point. We define the stackup in consultation with fabrication, validate impedance calculations, specify surface finish against the solderability and shelf-life requirements of your assembly window, and set tolerance classes that don't rely on exceptional fab capability.</p>
+      <div class="specialty-tags">
+        <span class="tag">Stackup definition</span><span class="tag">Impedance control</span><span class="tag">Surface finish</span><span class="tag">Fab alignment</span>
+      </div>
+    </div>
+    <div class="specialty-card">
+      <span class="specialty-num">04</span>
+      <h3 class="specialty-title">Assembly Optimisation</h3>
+      <p class="specialty-desc">Component placement drives assembly cost and yield more than almost any other design decision. We review and correct orientation consistency for feeders, ensure adequate courtyard clearance for pick-and-place, validate fiducial coverage for optical alignment, and check that all SMT components are accessible on a single reflow pass where possible. Through-hole and mixed-technology boards get a separate wave or selective solder assessment.</p>
+      <div class="specialty-tags">
+        <span class="tag">Placement review</span><span class="tag">Fiducials</span><span class="tag">Reflow access</span><span class="tag">THT/SMT mix</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DFM CHECKLIST STRIP -->
+  <div class="dfm-strip">
+    <div class="dfm-strip-item">
+      <span class="dfm-strip-label">Checked</span>
+      <span class="dfm-strip-value">Copper clearances vs fab capability</span>
+    </div>
+    <div class="dfm-strip-item">
+      <span class="dfm-strip-label">Checked</span>
+      <span class="dfm-strip-value">Paste aperture sizing for all pads</span>
+    </div>
+    <div class="dfm-strip-item">
+      <span class="dfm-strip-label">Checked</span>
+      <span class="dfm-strip-value">Component availability & lead times</span>
+    </div>
+    <div class="dfm-strip-item">
+      <span class="dfm-strip-label">Checked</span>
+      <span class="dfm-strip-value">Fiducial placement & courtyard clearance</span>
+    </div>
+    <div class="dfm-strip-item">
+      <span class="dfm-strip-label">Checked</span>
+      <span class="dfm-strip-value">Stackup vs impedance targets</span>
+    </div>
+    <div class="dfm-strip-item">
+      <span class="dfm-strip-label">Checked</span>
+      <span class="dfm-strip-value">Thermal relief on connectors & heavy pads</span>
+    </div>
+    <div class="dfm-strip-item">
+      <span class="dfm-strip-label">Checked</span>
+      <span class="dfm-strip-value">Single-side SMT reflow where possible</span>
+    </div>
+    <div class="dfm-strip-item">
+      <span class="dfm-strip-label">Checked</span>
+      <span class="dfm-strip-value">Test point access for in-circuit test</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMS -->
+<section id="problems">
+  <div class="section-header fade-up">
+    <p class="section-tag">Problems We Solve</p>
+    <span class="section-num">(03)</span>
+  </div>
+  <div class="fade-up" style="margin-bottom: 4rem;">
+    <h2 class="section-title">Where PCB designs break down in production.</h2>
+    <p class="section-body">The same manufacturing failures appear across different products and different teams. Most of them are traceable to specific design decisions made without manufacturing in mind — and most are avoidable if the right constraints are applied early enough.</p>
+  </div>
+  <div class="problems-grid">
+    <div class="problem-card">
+      <span class="problem-icon">Issue 01</span>
+      <h3 class="problem-title">Assembly yield drops at volume</h3>
+      <p class="problem-desc">A design that assembles cleanly at 50 units starts producing defects at 2,000. Tombstoning on 0402s with asymmetric thermal loads. Solder bridges on fine-pitch QFNs where paste apertures were never reviewed. These are layout problems, not process problems — and they're fixable before the first production order.</p>
+    </div>
+    <div class="problem-card">
+      <span class="problem-icon">Issue 02</span>
+      <h3 class="problem-title">Fabrication costs are higher than expected</h3>
+      <p class="problem-desc">Tight clearances that push the design into a premium capability tier. Controlled impedance specified on a layer that the chosen fab handles poorly. Surface finish selected for aesthetics rather than solderability. Each decision adds cost. We identify and remove the unnecessary ones without touching electrical performance.</p>
+    </div>
+    <div class="problem-card">
+      <span class="problem-icon">Issue 03</span>
+      <h3 class="problem-title">Components go out of stock mid-production</h3>
+      <p class="problem-desc">A sole-sourced MCU on a 52-week lead time. A passive that only one distributor carries. A connector family that was discontinued six months ago and nobody noticed until the CM asked. A BOM audit before committing to production finds these before they become a line-stop.</p>
+    </div>
+    <div class="problem-card">
+      <span class="problem-icon">Issue 04</span>
+      <h3 class="problem-title">Prototypes worked — production boards don't</h3>
+      <p class="problem-desc">Hand-assembled prototypes tolerate a lot. Production SMT reflow does not. Paste deposits that were applied manually now need to print consistently through a stencil at 0.12 mm aperture. Bodge wires that were never removed from the Gerbers. Design intent that wasn't communicated to the CM. The transition from prototype to production exposes everything that was deferred.</p>
+    </div>
+    <div class="problem-card">
+      <span class="problem-icon">Issue 05</span>
+      <h3 class="problem-title">No test coverage at production</h3>
+      <p class="problem-desc">A board with no test points, no boundary scan access, and no production test procedure ships into a box and fails in the field. Functional failures that would have been caught by a 30-second flying probe test become warranty returns. We design test access in from the start — not as an afterthought when the CM quotes flying probe at £4 per board.</p>
+    </div>
+    <div class="problem-card">
+      <span class="problem-icon">Issue 06</span>
+      <h3 class="problem-title">CM feedback creates expensive respins</h3>
+      <p class="problem-desc">The CM returns a DFM report on day one of production quoting. It lists 23 issues. Twelve of them require layout changes. Three require component substitutions. The production schedule slips by eight weeks while the design is revised. A thorough DFM pass before sending files to the CM eliminates this entirely.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-header fade-up">
+    <p class="section-tag">Our DFM Process</p>
+    <span class="section-num">(04)</span>
+  </div>
+  <div class="fade-up" style="margin-bottom: 4rem;">
+    <h2 class="section-title">From design files to production-ready deliverables.</h2>
+    <p class="section-body">Whether we designed the board or are reviewing an existing one, the process is the same — methodical, documented, and aligned to the specific fabricator and CM that will build it.</p>
+  </div>
+  <div class="process-steps">
+    <div class="process-step">
+      <span class="step-num">01</span>
+      <h3 class="step-title">Design Review & Risk Identification</h3>
+      <p class="step-desc">Full review of schematic, layout, stackup, and BOM against fabrication and assembly constraints. Every issue categorised by severity. Findings documented with specific recommendations — not vague observations.</p>
+      <span class="step-arrow">→</span>
+    </div>
+    <div class="process-step">
+      <span class="step-num">02</span>
+      <h3 class="step-title">Stackup & Fabrication Alignment</h3>
+      <p class="step-desc">Stackup defined or reviewed against the target fab's process capability. Impedance calculations validated. Surface finish, drill aspect ratio, and minimum feature sizes confirmed within the fab's standard capability to avoid premium surcharges.</p>
+      <span class="step-arrow">→</span>
+    </div>
+    <div class="process-step">
+      <span class="step-num">03</span>
+      <h3 class="step-title">Layout Improvements</h3>
+      <p class="step-desc">Placement corrected for assembly yield — orientation consistency, courtyard clearance, fiducial coverage, thermal relief, and paste aperture sizing. Changes made in the native design tool and reviewed before implementation.</p>
+      <span class="step-arrow">→</span>
+    </div>
+    <div class="process-step">
+      <span class="step-num">04</span>
+      <h3 class="step-title">BOM Optimisation</h3>
+      <p class="step-desc">Component availability checked against live stock. Sole-sourced parts identified and alternates qualified. Value consolidation opportunities flagged. Final BOM cross-referenced to distributor pricing at target volume to validate cost model.</p>
+      <span class="step-arrow">→</span>
+    </div>
+    <div class="process-step">
+      <span class="step-num">05</span>
+      <h3 class="step-title">Pre-Production Validation</h3>
+      <p class="step-desc">Final Gerbers, drill files, and fab notes reviewed before submission. Assembly drawing and CPL generated for CM. Test coverage documented. First-article inspection criteria defined so the first production boards are verified against a clear acceptance standard.</p>
+      <span class="step-arrow">→</span>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDY -->
+<section id="case-study">
+  <div class="section-header fade-up">
+    <p class="section-tag">Case Study</p>
+    <span class="section-num">(05)</span>
+  </div>
+  <div class="case-grid fade-up">
+    <div>
+      <span class="case-label">Project — Consumer Focus Timer</span>
+      <h2 class="case-title">High-volume consumer hardware. One prototype iteration. No CM respins.</h2>
+      <p class="case-body">The focus timer was designed for high-volume consumer manufacture from the outset — a circular RGB LED array driven by an integrated LED controller, a low-power microcontroller, and a Bluetooth LE radio, all assembled in a compact two-layer form factor with a unit cost target that left minimal margin for BOM overrun or assembly yield loss.</p>
+      <p class="case-body">DFM constraints drove placement decisions throughout. All SMT components were oriented consistently for single-pass reflow. The LED array was laid out with matched thermal loads on each pad to prevent tombstoning during reflow — a risk that appeared in the first placement draft and was corrected before the board was sent to fab. Passive values were consolidated across the design to reduce unique line items and simplify kitting. Component availability was checked at target volume before the BOM was locked.</p>
+      <p class="case-body">The Bluetooth antenna proximity to the LED array required careful ground plane management — validated during prototype bring-up to confirm no desensitisation under full LED load. The result was a design the CM could quote, build, and test without modification.</p>
+      <div class="case-result">
+        <span class="case-result-label">Result</span>
+        <p class="case-result-text">BOM cost within target at production volume. Assembly yield high from first production run — no layout-driven defects. Zero CM-requested design changes. Bluetooth LE performance confirmed unaffected by LED load. Production-ready in a single prototype iteration.</p>
+      </div>
+    </div>
+    <div class="case-meta-block">
+      <div class="case-meta-item">
+        <span class="case-meta-label">Product type</span>
+        <span class="case-meta-value">Consumer electronics — high-volume manufacture</span>
+      </div>
+      <div class="case-meta-item">
+        <span class="case-meta-label">DFM focus areas</span>
+        <span class="case-meta-value">Assembly yield, BOM cost reduction, component consolidation, single-pass reflow, CM handoff</span>
+      </div>
+      <div class="case-meta-item">
+        <span class="case-meta-label">Key risks addressed</span>
+        <span class="case-meta-value">LED tombstoning under reflow, antenna desensitisation from adjacent LED array, sole-sourced passive components</span>
+      </div>
+      <div class="case-meta-item">
+        <span class="case-meta-label">Prototype iterations</span>
+        <span class="case-meta-value">One — no post-CM design respins required</span>
+      </div>
+      <div class="case-meta-item">
+        <span class="case-meta-label">Outcome</span>
+        <span class="case-meta-value">On-cost, on-yield, production-ready without modification at CM</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-inner fade-up">
+    <div>
+      <h2 class="section-title">Preparing a design for production?</h2>
+      <p class="section-body">Whether you need a DFM review of an existing board or want PCB design for manufacturing built in from the start, we can help. We work with teams across the UK and internationally — and we're straightforward about what a design needs before it's ready to build at volume.</p>
+      <p class="cta-note">We respond to all enquiries within one business day.</p>
+    </div>
+    <div style="flex-shrink: 0;">
+      <a href="mailto:info@ecadesign.co.uk" class="cta-cta-link">info@ecadesign.co.uk &nbsp;↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header fade-up">
+    <p class="section-tag">Contact</p>
+    <span class="section-num">(06)</span>
+  </div>
+  <div class="contact-grid">
+    <div class="fade-up">
+      <h2 class="section-title">Send us your design files.</h2>
+      <p class="section-body">Tell us what you're building, where you are in the process, and what your production target looks like. We'll assess what the design needs and give you a clear answer on scope and timeline.</p>
+      <a href="mailto:info@ecadesign.co.uk" class="contact-cta-link">Get in contact &nbsp;↗</a>
+    </div>
+    <div class="fade-up">
+      <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:0;">Find us online</p>
+      <div class="social-list">
+        <a href="https://www.linkedin.com/company/ecadesign" target="_blank" class="social-link">
+          <span class="social-label">LinkedIn</span>
+          <div class="social-right">
+            <span class="social-handle">ECA Design</span>
+            <span class="social-arr">↗</span>
+          </div>
+        </a>
+        <a href="https://www.instagram.com/ecadesign" target="_blank" class="social-link">
+          <span class="social-label">Instagram</span>
+          <div class="social-right">
+            <span class="social-handle">@ecadesign</span>
+            <span class="social-arr">↗</span>
+          </div>
+        </a>
+        <a href="mailto:info@ecadesign.co.uk" class="social-link">
+          <span class="social-label">Email</span>
+          <div class="social-right">
+            <span class="social-handle">info@ecadesign.co.uk</span>
+            <span class="social-arr">↗</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">
+    <span class="footer-brand">ECA Design</span>
+    <span class="footer-copy">© 2025 ECA Design Ltd. All rights reserved.</span>
+    <span class="footer-copy">info@ecadesign.co.uk</span>
+  </div>
+  <div class="footer-right">
+    <a href="https://www.linkedin.com/company/ecadesign" target="_blank" class="footer-soc">LinkedIn</a>
+    <a href="https://www.instagram.com/ecadesign" target="_blank" class="footer-soc">Instagram</a>
+    <a href="mailto:info@ecadesign.co.uk" class="footer-cta">Start a project</a>
+  </div>
+</footer>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">PCB Design for Manufacturing</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">DFM Review</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Assembly Yield Optimisation</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">BOM Cost Reduction</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Stackup Planning</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Electronics Design for Production</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Fabrication Alignment</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">PCB Design for Manufacturing</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">DFM Review</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Assembly Yield Optimisation</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">BOM Cost Reduction</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Stackup Planning</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Electronics Design for Production</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Fabrication Alignment</span><span class="ticker-dot">·</span>
+  </div>
+</div>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.fade-up, .specialties-grid, .problems-grid, .process-steps, .dfm-strip').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.specialty-card').forEach((card, i) => {
+    card.style.transitionDelay = `${i * 0.1}s`;
+  });
+
+  document.querySelectorAll('.problem-card').forEach((card, i) => {
+    card.style.transitionDelay = `${i * 0.08}s`;
+  });
+
+  document.querySelectorAll('.process-step').forEach((step, i) => {
+    step.style.transitionDelay = `${i * 0.08}s`;
+  });
+
+  document.querySelectorAll('.dfm-strip-item').forEach((item, i) => {
+    item.style.transitionDelay = `${i * 0.05}s`;
+  });
+</script>
+</body>
+</html>
