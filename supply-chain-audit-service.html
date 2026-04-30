@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VR5VFBVV13"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-VR5VFBVV13');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electronics Supply Chain Audit — ECA Design | Hardware Resilience Engineering, London</title>
+  <meta name="description" content="Professional Electronics Supply Chain Audit for OEMs and scaling startups. BOM scrubbing, obsolescence mitigation, and multi-path PCB design to de-risk your hardware. London's leading RF and PCB engineering firm.">
+  <link rel="icon" href="favpic.svg" type="image/svg+xml">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #f8f8f6;
+      --gray: #8a8a8a;
+      --border: #d0d0d0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', Helvetica Neue, sans-serif;
+      background: var(--white);
+      color: var(--black);
+      font-weight: 400;
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2.5rem;
+      mix-blend-mode: difference;
+    }
+
+    .nav-logo {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+    .nav-links a {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+
+    .nav-links a:hover { opacity: 1; }
+
+    .ticker {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--black);
+      padding: 0.5rem 0;
+      overflow: hidden;
+    }
+
+    .ticker-track {
+      display: flex;
+      white-space: nowrap;
+      animation: ticker 20s linear infinite;
+    }
+
+    .ticker-item {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--white);
+      text-transform: uppercase;
+      padding: 0 2rem;
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    .ticker-dot {
+      font-size: 11px;
+      color: var(--white);
+      opacity: 0.3;
+      flex-shrink: 0;
+      padding: 0 0.5rem;
+    }
+
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    #hero {
+      min-height: 100vh;
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2.5rem 2.5rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-headline {
+      font-size: clamp(3rem, 9vw, 9rem);
+      font-weight: 300;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-bottom: 3rem;
+      max-width: 16ch;
+    }
+
+    .hero-headline em {
+      font-style: normal;
+      border-bottom: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .hero-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 2rem;
+    }
+
+    .hero-desc {
+      max-width: 38ch;
+      font-size: 14px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.55);
+      font-weight: 300;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--white);
+      padding: 1rem 2rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+      flex-shrink: 0;
+    }
+
+    .hero-cta:hover { opacity: 0.85; }
+
+    .scroll-hint {
+      position: absolute;
+      right: 2.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .scroll-hint span {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      writing-mode: vertical-rl;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background: rgba(255,255,255,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: -100%; left: 0;
+      width: 100%; height: 100%;
+      background: white;
+      animation: scrollLine 1.8s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0% { top: -100%; }
+      100% { top: 100%; }
+    }
+
+    section {
+      padding: 6rem 2.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 4rem;
+    }
+
+    .section-tag {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    .section-num {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 4rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      max-width: 20ch;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-body {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--gray);
+      max-width: 55ch;
+      font-weight: 300;
+    }
+
+    /* RISK SECTION (replaces specialties) */
+    #risk { background: var(--white); }
+
+    .risk-intro {
+      margin-bottom: 4rem;
+    }
+
+    .risk-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .risk-grid.visible { opacity: 1; transform: translateY(0); }
+
+    .risk-card {
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .risk-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--black);
+      transition: width 0.4s ease;
+    }
+
+    .risk-card:hover::before { width: 100%; }
+    .risk-card:hover { background: #f0f0ee; }
+
+    .risk-num {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--gray);
+      margin-bottom: 2rem;
+      display: block;
+    }
+
+    .risk-title {
+      font-size: 1.5rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.25rem;
+      line-height: 1.2;
+    }
+
+    .risk-desc {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--gray);
+      font-weight: 300;
+    }
+
+    .risk-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 2rem;
+    }
+
+    .tag {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.7rem;
+      color: var(--gray);
+    }
+
+    /* FRAMEWORK STEPS (replaces projects — dark section) */
+    #framework {
+      background: var(--black);
+      color: var(--white);
+      border-top: none;
+    }
+
+    #framework .section-tag { color: rgba(255,255,255,0.4); }
+    #framework .section-num { color: rgba(255,255,255,0.4); }
+    #framework .section-title { color: var(--white); }
+    #framework .section-body { color: rgba(255,255,255,0.45); }
+
+    .steps-list {
+      border-top: 1px solid rgba(255,255,255,0.12);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .steps-list.visible { opacity: 1; transform: translateY(0); }
+
+    .step-item {
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      overflow: hidden;
+    }
+
+    .step-trigger {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem 0;
+      cursor: pointer;
+      user-select: none;
+      transition: opacity 0.2s;
+    }
+
+    .step-trigger:hover { opacity: 0.7; }
+
+    .step-trigger-left {
+      display: flex;
+      align-items: baseline;
+      gap: 2rem;
+    }
+
+    .step-index {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.3);
+      min-width: 2rem;
+    }
+
+    .step-name {
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-weight: 300;
+      letter-spacing: -0.01em;
+      color: var(--white);
+    }
+
+    .step-category {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .step-arrow {
+      width: 24px;
+      height: 24px;
+      position: relative;
+      flex-shrink: 0;
+      transition: transform 0.35s ease;
+    }
+
+    .step-arrow::before, .step-arrow::after {
+      content: '';
+      position: absolute;
+      background: rgba(255,255,255,0.5);
+    }
+
+    .step-arrow::before { width: 12px; height: 1px; top: 12px; left: 6px; }
+    .step-arrow::after { width: 1px; height: 12px; top: 6px; left: 12px; transition: transform 0.35s ease; }
+
+    .step-item.open .step-arrow { transform: rotate(45deg); }
+
+    .step-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .step-item.open .step-body { max-height: 500px; }
+
+    .step-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      padding: 0 0 3rem 4rem;
+    }
+
+    .step-desc {
+      font-size: 14px;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.55);
+      font-weight: 300;
+    }
+
+    .step-meta { display: flex; flex-direction: column; gap: 1.25rem; }
+    .step-meta-row { display: flex; flex-direction: column; gap: 0.25rem; }
+
+    .meta-label {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .meta-value {
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      font-weight: 300;
+    }
+
+    /* CONTACT */
+    #contact { background: var(--white); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .contact-cta-link {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: var(--black);
+      padding: 1rem 2rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+      margin-top: 2.5rem;
+    }
+
+    .contact-cta-link:hover { opacity: 0.8; }
+
+    .social-list { display: flex; flex-direction: column; }
+
+    .social-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--black);
+      position: relative;
+      overflow: hidden;
+      transition: opacity 0.2s;
+    }
+
+    .social-link:first-child { border-top: 1px solid var(--border); }
+    .social-link:hover { opacity: 0.55; }
+
+    .social-link::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0;
+      width: 0; height: 1px;
+      background: var(--black);
+      transition: width 0.4s ease;
+    }
+
+    .social-link:hover::after { width: 100%; }
+
+    .social-label {
+      font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+      font-weight: 300;
+      letter-spacing: -0.01em;
+    }
+
+    .social-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .social-handle {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-transform: uppercase;
+    }
+
+    .social-arr {
+      font-size: 16px;
+      color: var(--gray);
+      transition: transform 0.25s ease;
+      display: inline-block;
+    }
+
+    .social-link:hover .social-arr { transform: translate(3px, -3px); }
+
+    /* SECTORS (replaces journal — proof section) */
+    #sectors { background: var(--white); }
+
+    .sectors-feature {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+      padding: 3rem 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--black);
+      position: relative;
+    }
+
+    .sectors-tag {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray);
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .sectors-title {
+      font-size: clamp(1.4rem, 2vw, 2rem);
+      font-weight: 300;
+      letter-spacing: -0.015em;
+      line-height: 1.15;
+    }
+
+    .sectors-excerpt {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--gray);
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+
+    .sectors-footer {
+      margin-top: 1.5rem;
+      text-align: right;
+    }
+
+    .sectors-link {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .sectors-link:hover { color: var(--black); }
+
+    /* FOOTER */
+    footer {
+      background: var(--black);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 2rem 2.5rem 5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-left { display: flex; flex-direction: column; gap: 0.4rem; }
+
+    .footer-brand {
+      font-size: 13px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    .footer-copy {
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-right { display: flex; align-items: center; gap: 2rem; }
+
+    .footer-soc {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-soc:hover { color: rgba(255,255,255,0.9); }
+
+    .footer-cta {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--white);
+      padding: 0.85rem 1.75rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .footer-cta:hover { opacity: 0.85; }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 768px) {
+      nav { padding: 1.25rem 1.5rem; }
+      .nav-links { display: none; }
+      #hero { padding: 2rem 1.5rem 5rem; }
+      section { padding: 4rem 1.5rem; }
+      .risk-grid { grid-template-columns: 1fr; }
+      .step-content { grid-template-columns: 1fr; gap: 2rem; padding-left: 2rem; }
+      .step-name { font-size: 1.4rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      footer { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+      .scroll-hint { display: none; }
+      .hero-bottom { flex-direction: column; align-items: flex-start; }
+      .sectors-feature { grid-template-columns: 1fr; gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">ECA.</a>
+  <ul class="nav-links">
+    <li><a href="#risk">The Risk</a></li>
+    <li><a href="#framework">Our Framework</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-overlay"></div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+  <p class="hero-label">Electronics Supply Chain Audit — London, UK</p>
+  <h1 class="hero-headline">Production<br>secured<br><em>permanently.</em></h1>
+  <div class="hero-bottom">
+    <p class="hero-desc">Your production is only as strong as your weakest component. We perform forensic BOM analysis and resilience engineering to eliminate single-source dependencies before they halt your line.</p>
+    <a href="mailto:info@ecadesign.co.uk" class="hero-cta">Request your audit</a>
+  </div>
+</section>
+
+<!-- THE RISK -->
+<section id="risk">
+  <div class="section-header fade-up">
+    <p class="section-tag">The Cost of Inaction</p>
+    <span class="section-num">(01)</span>
+  </div>
+  <div class="fade-up risk-intro">
+    <h2 class="section-title">Is your hardware a "black box"?</h2>
+    <p class="section-body">In an era of unpredictable silicon cycles and geopolitical shifts, a single End-of-Life notice can halt a production line indefinitely. Legacy designs and unoptimised BOMs are silent liabilities — creating a compounding risk profile that grows with every passing quarter.</p>
+  </div>
+  <div class="risk-grid">
+    <div class="risk-card">
+      <span class="risk-num">01</span>
+      <h3 class="risk-title">Revenue Stagnation</h3>
+      <p class="risk-desc">Lead times for critical ICs can jump from 8 weeks to 52 weeks without warning. A single-source dependency buried in your BOM can halt production — and your revenue — indefinitely.</p>
+      <div class="risk-tags">
+        <span class="tag">EOL Risk</span><span class="tag">Lead Times</span><span class="tag">IC Shortages</span>
+      </div>
+    </div>
+    <div class="risk-card">
+      <span class="risk-num">02</span>
+      <h3 class="risk-title">Technical Debt</h3>
+      <p class="risk-desc">Patching firmware to support emergency part swaps often introduces instability and voids certifications. "Black box" hardware and aging architectures compound this risk over time.</p>
+      <div class="risk-tags">
+        <span class="tag">Firmware Risk</span><span class="tag">Certification</span><span class="tag">NRND Parts</span>
+      </div>
+    </div>
+    <div class="risk-card">
+      <span class="risk-num">03</span>
+      <h3 class="risk-title">Market Vulnerability</h3>
+      <p class="risk-desc">While you wait for a single microcontroller, your competitors are capturing market share with resilient, modern architectures. Supply chain risk is a competitive disadvantage.</p>
+      <div class="risk-tags">
+        <span class="tag">Market Share</span><span class="tag">Time-to-Market</span><span class="tag">OEM Risk</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FRAMEWORK (dark section) -->
+<section id="framework">
+  <div class="section-header fade-up">
+    <p class="section-tag">Hardware Resilience Framework</p>
+    <span class="section-num">(02)</span>
+  </div>
+  <div class="fade-up" style="margin-bottom: 4rem;">
+    <h2 class="section-title">A 3-step deep-dive technical intervention.</h2>
+    <p class="section-body">Our Electronics Supply Chain Audit transforms your hardware from a liability into an agile, resilient asset — designed to withstand supply disruption and scale with confidence.</p>
+  </div>
+  <div class="steps-list">
+
+    <div class="step-item">
+      <div class="step-trigger" onclick="toggleStep(this)">
+        <div class="step-trigger-left">
+          <span class="step-index">01</span>
+          <span class="step-name">Deep BOM Scrubbing & Risk Mapping</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:2rem;">
+          <span class="step-category">Obsolescence Mitigation</span>
+          <div class="step-arrow"></div>
+        </div>
+      </div>
+      <div class="step-body">
+        <div class="step-content">
+          <p class="step-desc">A forensic analysis of your current component list, cross-referencing global databases to identify every hidden risk. We quantify the "Time-to-Failure" for your current supply chain and map every critical dependency before it becomes a crisis.</p>
+          <div class="step-meta">
+            <div class="step-meta-row"><span class="meta-label">Deliverable</span><span class="meta-value">Full BOM Risk Report</span></div>
+            <div class="step-meta-row"><span class="meta-label">Identifies</span><span class="meta-value">EOL, NRND, Single-source Parts</span></div>
+            <div class="step-meta-row"><span class="meta-label">Output</span><span class="meta-value">Lead-time Forecasting & Prioritised Risk Matrix</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-item">
+      <div class="step-trigger" onclick="toggleStep(this)">
+        <div class="step-trigger-left">
+          <span class="step-index">02</span>
+          <span class="step-name">Resilience Engineering & Multi-Path Design</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:2rem;">
+          <span class="step-category">PCB Redesign</span>
+          <div class="step-arrow"></div>
+        </div>
+      </div>
+      <div class="step-body">
+        <div class="step-content">
+          <p class="step-desc">We leverage our multi-layer PCB redesign expertise to move beyond 1-to-1 replacements. Flexible Land Patterns allow your board to accept multiple IC variants without a secondary spin — and DFM optimisation ensures your board can be manufactured by multiple fabrication houses globally.</p>
+          <div class="step-meta">
+            <div class="step-meta-row"><span class="meta-label">Discipline</span><span class="meta-value">Multi-layer PCB, RF Engineering</span></div>
+            <div class="step-meta-row"><span class="meta-label">Method</span><span class="meta-value">Multi-Footprint Layouts, Flexible Land Patterns</span></div>
+            <div class="step-meta-row"><span class="meta-label">Outcome</span><span class="meta-value">DFM Optimised, Multi-fab Compatible</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-item">
+      <div class="step-trigger" onclick="toggleStep(this)">
+        <div class="step-trigger-left">
+          <span class="step-index">03</span>
+          <span class="step-name">Future-Proofing via Modern Protocols</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:2rem;">
+          <span class="step-category">RF & Protocol Audit</span>
+          <div class="step-arrow"></div>
+        </div>
+      </div>
+      <div class="step-body">
+        <div class="step-content">
+          <p class="step-desc">A resilient board must also be a relevant board. We audit your RF front-end and logic to integrate modern, widely available standards — migrating from legacy chips to robust, high-availability modules and ensuring your power delivery network is efficient enough to support the next generation of silicon.</p>
+          <div class="step-meta">
+            <div class="step-meta-row"><span class="meta-label">Protocols</span><span class="meta-value">LoRa, Wi-Fi 6, BT 5.2</span></div>
+            <div class="step-meta-row"><span class="meta-label">Scope</span><span class="meta-value">RF Front-end, PDN, Logic Architecture</span></div>
+            <div class="step-meta-row"><span class="meta-label">Outcome</span><span class="meta-value">Modern, High-availability Stack</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROVEN SECTORS -->
+<section id="sectors">
+  <div class="section-header fade-up">
+    <p class="section-tag">Proven Precision</p>
+    <span class="section-num">(03)</span>
+  </div>
+  <div class="sectors-feature fade-up">
+    <div>
+      <span class="sectors-tag">High-Reliability Sectors · Medical &amp; Industrial IoT</span>
+      <h3 class="sectors-title">Methodology forged where downtime is not an option.</h3>
+    </div>
+    <div>
+      <p class="sectors-excerpt">Our resilience framework is validated in the most demanding environments. We engineered UVC Disinfection systems with strict regulatory compliance and guaranteed component longevity — and Flood Detection sensors designed for 10-year deployment cycles using resilient RF architecture. We bring the same rigour to your production challenge.</p>
+      <a href="index.html#projects" class="sectors-link">View our projects ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header fade-up">
+    <p class="section-tag">Contact</p>
+    <span class="section-num">(04)</span>
+  </div>
+  <div class="contact-grid">
+    <div class="fade-up">
+      <h2 class="section-title">Protect your 2026 production.</h2>
+      <p class="section-body">Don't wait for a "Part Unavailable" notification to react. A proactive Hardware Risk Assessment protects your margins, your certifications, and your reputation. Reach out and we'll respond within one business day.</p>
+      <a href="mailto:info@ecadesign.co.uk" class="contact-cta-link">Request Your Hardware Resilience Audit &nbsp;↗</a>
+    </div>
+    <div class="fade-up">
+      <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:0;">Find us online</p>
+      <div class="social-list">
+        <a href="https://www.linkedin.com/company/ecadesign" target="_blank" class="social-link">
+          <span class="social-label">LinkedIn</span>
+          <div class="social-right">
+            <span class="social-handle">ECA Design</span>
+            <span class="social-arr">↗</span>
+          </div>
+        </a>
+        <a href="https://www.instagram.com/ecadesign" target="_blank" class="social-link">
+          <span class="social-label">Instagram</span>
+          <div class="social-right">
+            <span class="social-handle">@ecadesign</span>
+            <span class="social-arr">↗</span>
+          </div>
+        </a>
+        <a href="mailto:info@ecadesign.co.uk" class="social-link">
+          <span class="social-label">Email</span>
+          <div class="social-right">
+            <span class="social-handle">info@ecadesign.co.uk</span>
+            <span class="social-arr">↗</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">
+    <span class="footer-brand">ECA Design</span>
+    <span class="footer-copy">© 2025 ECA Design</span>
+    <span class="footer-copy">info@ecadesign.co.uk</span>
+  </div>
+  <div class="footer-right">
+    <a href="https://www.linkedin.com/company/ecadesign" target="_blank" class="footer-soc">LinkedIn</a>
+    <a href="https://www.instagram.com/ecadesign" target="_blank" class="footer-soc">Instagram</a>
+    <a href="mailto:info@ecadesign.co.uk" class="footer-cta">Request audit</a>
+  </div>
+</footer>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">Supply Chain Audit</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">BOM Scrubbing</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Obsolescence Mitigation</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Multi-path PCB Design</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">EOL Risk Management</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Hardware Resilience</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">DFM Optimisation</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Supply Chain Audit</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">BOM Scrubbing</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Obsolescence Mitigation</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Multi-path PCB Design</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">EOL Risk Management</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Hardware Resilience</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">DFM Optimisation</span><span class="ticker-dot">·</span>
+  </div>
+</div>
+
+<script>
+  function toggleStep(trigger) {
+    const item = trigger.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.step-item.open').forEach(el => el.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.fade-up, .risk-grid, .steps-list').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.risk-card').forEach((card, i) => {
+    card.style.transitionDelay = `${i * 0.12}s`;
+  });
+</script>
+</body>
+</html>
