@@ -621,6 +621,75 @@
     .scroll-hint { display: none; }
     .hero-bottom { flex-direction: column; align-items: flex-start; }
   }
+
+  #journal { background: var(--white); }
+ 
+  .journal-feature {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+    padding: 3rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--black);
+    position: relative;
+    transition: opacity 0.2s;
+  }
+ 
+  .journal-feature:hover { opacity: 0.65; }
+ 
+  .journal-vol {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gray);
+    display: block;
+    margin-bottom: 1rem;
+  }
+ 
+  .journal-feature-title {
+    font-size: clamp(1.4rem, 2vw, 2rem);
+    font-weight: 300;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+  }
+ 
+  .journal-feature-excerpt {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--gray);
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+ 
+  .journal-read {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+ 
+  .journal-footer {
+    margin-top: 1.5rem;
+    text-align: right;
+  }
+ 
+  .journal-all-link {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+ 
+  .journal-all-link:hover { color: var(--black); }
+ 
+  @media (max-width: 768px) {
+    .journal-feature { grid-template-columns: 1fr; gap: 1.5rem; }
+  }
 </style>
 </head>
 <body>
@@ -630,6 +699,7 @@
   <ul class="nav-links">
     <li><a href="#specialties">Specialties</a></li>
     <li><a href="#projects">Projects</a></li>
+    <li><a href="journal.html">Journal</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
@@ -830,10 +900,31 @@
   </div>
 </section>
 
+<section id="journal">
+  <div class="section-header fade-up">
+    <p class="section-tag">Engineering Journal</p>
+    <span class="section-num">(05)</span>
+  </div>
+ 
+  <a href="journal-vol01.html" class="journal-feature fade-up">
+    <div class="journal-feature-left">
+      <span class="journal-vol">Vol. 01 &nbsp;·&nbsp; Hardware Design &nbsp;·&nbsp; Oct 2025</span>
+      <h3 class="journal-feature-title">Designing for Signal Integrity in High-Speed PCB Layouts.</h3>
+    </div>
+    <div class="journal-feature-right">
+      <p class="journal-feature-excerpt">When rise times shorten, layout becomes part of the circuit. Chip antenna selection, impedance matching, and the details that decide your EMC test.</p>
+      <span class="journal-read">Read Article →</span>
+    </div>
+  </a>
+ 
+  <div class="journal-footer fade-up">
+    <a href="journal.html" class="journal-all-link">View all articles ↗</a>
+  </div>
+</section>
 <footer>
   <div class="footer-left">
     <span class="footer-brand">ECA Design</span>
-    <span class="footer-copy">© 2025 ECA Design Ltd. All rights reserved.</span>
+    <span class="footer-copy">© 2025 ECA Design</span>
         <span class="footer-copy">info@ecadesign.co.uk</span>
   </div>
   <div class="footer-right">

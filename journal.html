@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Engineering Journal — ECA Design</title>
+  <meta name="description" content="Technical articles on PCB design, RF engineering, IoT architecture, and electronics from the ECA Design team.">
+  <link rel="icon" href="favpic.svg" type="image/svg+xml">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #f8f8f6;
+      --gray: #8a8a8a;
+      --border: #d0d0d0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', Helvetica Neue, sans-serif;
+      background: var(--white);
+      color: var(--black);
+      font-weight: 400;
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2.5rem;
+      background: rgba(248, 248, 246, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--black);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+
+    .nav-links a {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--black);
+      text-decoration: none;
+      text-transform: uppercase;
+      opacity: 0.55;
+      transition: opacity 0.2s;
+    }
+
+    .nav-links a:hover { opacity: 1; }
+    .nav-links a.active { opacity: 1; }
+
+    /* Header */
+    .journal-header {
+      padding: 12rem 2.5rem 5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .journal-header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 4rem;
+    }
+
+    .journal-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .journal-title {
+      font-size: clamp(3rem, 6vw, 6rem);
+      font-weight: 300;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      max-width: 14ch;
+    }
+
+    .journal-title em {
+      font-style: normal;
+      border-bottom: 2px solid rgba(0,0,0,0.25);
+    }
+
+    .journal-desc {
+      max-width: 36ch;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--gray);
+      font-weight: 300;
+      flex-shrink: 0;
+    }
+
+    /* Filter bar */
+    .filter-bar {
+      padding: 1.5rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .filter-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-right: 1rem;
+    }
+
+    .filter-btn {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--border);
+      background: none;
+      cursor: pointer;
+      color: var(--gray);
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--black);
+      color: var(--white);
+      border-color: var(--black);
+    }
+
+    /* Articles list */
+    .articles-section {
+      padding: 0 2.5rem 8rem;
+    }
+
+    /* Featured article — full width */
+    .article-featured {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      padding: 5rem 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--black);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .article-featured::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0;
+      width: 0; height: 1px;
+      background: var(--black);
+      transition: width 0.5s ease;
+    }
+
+    .article-featured:hover::after { width: 100%; }
+
+    .article-featured-img {
+      aspect-ratio: 4/3;
+      background: #e8e8e6;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .article-featured-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .article-featured:hover .article-featured-img img { transform: scale(1.03); }
+
+    .article-featured-img .img-placeholder {
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #111;
+    }
+
+    .article-featured-content {}
+
+    .article-vol {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .featured-badge {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      background: var(--black);
+      color: var(--white);
+      padding: 0.25rem 0.6rem;
+      margin-right: 0.75rem;
+    }
+
+    .article-featured-title {
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      font-weight: 300;
+      letter-spacing: -0.015em;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .article-excerpt {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--gray);
+      font-weight: 300;
+      margin-bottom: 2.5rem;
+    }
+
+    .article-meta-row {
+      display: flex;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .meta-pill {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.7rem;
+      color: var(--gray);
+    }
+
+    .article-date {
+      font-size: 11px;
+      color: var(--gray);
+      letter-spacing: 0.05em;
+    }
+
+    .read-link {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--black);
+      font-weight: 500;
+      transition: gap 0.2s;
+    }
+
+    .article-featured:hover .read-link { gap: 0.9rem; }
+
+    /* Grid articles */
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+      margin-top: 0;
+    }
+
+    .article-card {
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--black);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .article-card:hover { background: #f0f0ee; }
+
+    .article-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--black);
+      transition: width 0.4s ease;
+    }
+
+    .article-card:hover::before { width: 100%; }
+
+    .card-img {
+      aspect-ratio: 16/9;
+      background: #e8e8e6;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .article-card:hover .card-img img { transform: scale(1.04); }
+
+    .card-img-placeholder {
+      width: 100%; height: 100%;
+      background: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+    }
+
+    .card-body { padding: 2rem; flex: 1; display: flex; flex-direction: column; }
+
+    .card-num {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--gray);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      margin-bottom: 1rem;
+    }
+
+    .card-excerpt {
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--gray);
+      font-weight: 300;
+      flex: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .card-cat {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    .card-arr {
+      font-size: 16px;
+      color: var(--gray);
+      transition: transform 0.2s;
+      display: inline-block;
+    }
+
+    .article-card:hover .card-arr { transform: translate(3px, -3px); }
+
+    /* Newsletter strip */
+    .newsletter-strip {
+      background: var(--black);
+      padding: 4rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 3rem;
+      margin-top: 6rem;
+    }
+
+    .newsletter-text h3 {
+      font-size: 1.6rem;
+      font-weight: 300;
+      color: var(--white);
+      letter-spacing: -0.01em;
+      margin-bottom: 0.5rem;
+    }
+
+    .newsletter-text p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      font-weight: 300;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 0;
+      flex-shrink: 0;
+    }
+
+    .newsletter-input {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-right: none;
+      padding: 0.85rem 1.5rem;
+      font-size: 13px;
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      width: 280px;
+      letter-spacing: 0.02em;
+    }
+
+    .newsletter-input::placeholder { color: rgba(255,255,255,0.3); }
+
+    .newsletter-btn {
+      background: var(--white);
+      color: var(--black);
+      border: none;
+      padding: 0.85rem 1.75rem;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: opacity 0.2s;
+    }
+
+    .newsletter-btn:hover { opacity: 0.85; }
+
+    /* Footer */
+    footer {
+      background: var(--black);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 2rem 2.5rem 5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-left { display: flex; flex-direction: column; gap: 0.4rem; }
+
+    .footer-brand {
+      font-size: 13px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    .footer-copy {
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-right { display: flex; align-items: center; gap: 2rem; }
+
+    .footer-soc {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-soc:hover { color: rgba(255,255,255,0.9); }
+
+    .footer-cta {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--white);
+      padding: 0.85rem 1.75rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .footer-cta:hover { opacity: 0.85; }
+
+    /* Ticker */
+    .ticker {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--black);
+      padding: 0.5rem 0;
+      overflow: hidden;
+    }
+
+    .ticker-track {
+      display: flex;
+      white-space: nowrap;
+      animation: ticker 20s linear infinite;
+    }
+
+    .ticker-item {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--white);
+      text-transform: uppercase;
+      padding: 0 2rem;
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    .ticker-dot {
+      font-size: 11px;
+      color: var(--white);
+      opacity: 0.3;
+      flex-shrink: 0;
+      padding: 0 0.5rem;
+    }
+
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 768px) {
+      nav { padding: 1.25rem 1.5rem; }
+      .nav-links { display: none; }
+      .journal-header { padding: 8rem 1.5rem 3rem; }
+      .journal-header-inner { flex-direction: column; gap: 2rem; }
+      .articles-section { padding: 0 1.5rem 6rem; }
+      .article-featured { grid-template-columns: 1fr; gap: 2rem; }
+      .articles-grid { grid-template-columns: 1fr; }
+      .newsletter-strip { flex-direction: column; align-items: flex-start; gap: 2rem; }
+      .newsletter-input { width: 200px; }
+      footer { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+      .filter-bar { padding: 1.25rem 1.5rem; flex-wrap: wrap; }
+    }
+
+    /* This ensures images fill the space perfectly without distorting */
+.card-img img, .article-featured-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Crucial: crops the image to fill the box */
+  object-position: center;
+  display: block;
+}
+
+/* Optional: improve the hover transition for a high-end feel */
+.article-card:hover .card-img img {
+  transform: scale(1.05);
+  transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">ECA.</a>
+  <ul class="nav-links">
+    <li><a href="index.html#specialties">Specialties</a></li>
+    <li><a href="index.html#projects">Projects</a></li>
+    <li><a href="journal.html" class="active">Journal</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<header class="journal-header">
+  <div class="journal-header-inner fade-up">
+    <div>
+      <span class="journal-label">Engineering Journal — ECA Design</span>
+      <h1 class="journal-title">Technical<br>writing from<br><em>the bench.</em></h1>
+    </div>
+    <p class="journal-desc">Deep-dives into PCB design, RF engineering, IoT architecture, and the decisions that separate good hardware from great hardware.</p>
+  </div>
+</header>
+
+<div class="filter-bar">
+  <span class="filter-label">Filter</span>
+  <button class="filter-btn active" onclick="filterArticles('all', this)">All</button>
+  <button class="filter-btn" onclick="filterArticles('hardware-design', this)">Hardware Design</button>
+  <button class="filter-btn" onclick="filterArticles('rf', this)">RF &amp; Wireless</button>
+  <button class="filter-btn" onclick="filterArticles('iot', this)">IoT</button>
+  <button class="filter-btn" onclick="filterArticles('manufacturing', this)">Manufacturing</button>
+</div>
+
+<main class="articles-section">
+
+  <a href="journal-vol01.html" class="article-featured fade-up" data-category="hardware-design">
+    <div class="article-featured-img">
+      <img src="image0 (2).webp" alt="High-speed PCB design">
+    </div>
+    <div class="article-featured-content">
+      <span class="article-vol"><span class="featured-badge">Latest</span> Vol. 01</span>
+      <h2 class="article-featured-title">Compact Antenna Design for Hardware Founders</h2>
+      <p class="article-excerpt">When signal speeds increase and rise times shorten, the PCB layout becomes a critical component of the circuit itself. We cover chip antenna selection, impedance matching, and the layout details that make or break an EMC test.</p>
+      <div class="article-meta-row" style="margin-bottom:2rem;">
+        <span class="meta-pill">Hardware Design</span>
+        <span class="article-date">October 24, 2025</span>
+        <span class="article-date">6 min read</span>
+      </div>
+      <span class="read-link">Read Article →</span>
+    </div>
+  </a>
+
+  <div class="articles-grid">
+
+    <a href="journal-vol02.html" class="article-card fade-up" data-category="rf">
+      <div class="card-img">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" alt="LoRa Gateway">
+      </div>
+      <div class="card-body">
+        <span class="card-num">Vol. 02 — Power</span>
+        <h3 class="card-title">From Breadboard to Boardroom: Designing Reliable Power with LDOs</h3>
+        <p class="card-excerpt">Common mistakes when moving from Arduino to product, and how to aboid them</p>
+        <div class="card-footer">
+          <span class="card-cat">Hardware Design &amp; Wireless</span>
+          <span class="card-arr">↗</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="" class="article-card fade-up" data-category="iot" style="transition-delay:0.1s;">
+      <div class="card-img">
+        <div class="card-img-placeholder">Vol. 03</div>
+      </div>
+      <div class="card-body">
+        <span class="card-num">Vol. 03 — Coming Soon</span>
+        <h3 class="card-title">Ultra Low-Power Design: Getting 5 Years from a CR2032.</h3>
+        <p class="card-excerpt">Sleep mode strategies, peripheral gating, and the firmware-hardware co-design approach that let us achieve multi-year battery life on a constrained coin cell.</p>
+        <div class="card-footer">
+          <span class="card-cat">IoT Systems</span>
+          <span class="card-arr">↗</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="article-card fade-up" data-category="manufacturing" style="transition-delay:0.2s;">
+      <div class="card-img">
+        <div class="card-img-placeholder">Vol. 04</div>
+      </div>
+      <div class="card-body">
+        <span class="card-num">Vol. 04 — Coming Soon</span>
+        <h3 class="card-title">DFM in Practice: What Your PCB House Won't Tell You.</h3>
+        <p class="card-excerpt">The undocumented manufacturability rules we've learned from real production runs — stackup constraints, silkscreen clearances, and component spacing that avoids hand-rework.</p>
+        <div class="card-footer">
+          <span class="card-cat">Manufacturing</span>
+          <span class="card-arr">↗</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</main>
+
+<footer>
+  <div class="footer-left">
+    <span class="footer-brand">ECA Design</span>
+    <span class="footer-copy">© 2025 ECA Design</span>
+    <span class="footer-copy">info@ecadesign.co.uk</span>
+  </div>
+  <div class="footer-right">
+    <a href="https://www.linkedin.com/company/ecadesign" target="_blank" class="footer-soc">LinkedIn</a>
+    <a href="https://www.instagram.com/ecadesign" target="_blank" class="footer-soc">Instagram</a>
+    <a href="mailto:info@ecadesign.co.uk" class="footer-cta">Start a project</a>
+  </div>
+</footer>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">PCB Design</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">RF Engineering</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">IoT Systems</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Signal Integrity</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Antenna Design</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Low-power Design</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">EMC Compliance</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">PCB Design</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">RF Engineering</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">IoT Systems</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Signal Integrity</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Antenna Design</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Low-power Design</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">EMC Compliance</span><span class="ticker-dot">·</span>
+  </div>
+</div>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  function filterArticles(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('[data-category]').forEach(el => {
+      el.style.opacity = (cat === 'all' || el.dataset.category === cat) ? '1' : '0.25';
+      el.style.pointerEvents = (cat === 'all' || el.dataset.category === cat) ? 'auto' : 'none';
+    });
+  }
+
+  function handleSubscribe(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.textContent = 'Subscribed ✓';
+    btn.style.background = '#333';
+    btn.style.color = 'var(--white)';
+  }
+</script>
+
+</body>
+</html>s
