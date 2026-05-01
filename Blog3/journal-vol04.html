@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kicad How to create custom board shape / outline</title>
+  <link rel="icon" href="favpic.svg" type="image/svg+xml">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+
+    :root {
+      --black: #0a0a0a;
+      --white: #f8f8f6;
+      --gray: #8a8a8a;
+      --light-gray: #e0e0e0;
+      --border: #d0d0d0;
+      --accent: #222;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2.5rem;
+      background: rgba(248, 248, 246, 0.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--black);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .back-link {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--gray);
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--black); }
+
+    /* Blog Header */
+    header.post-header {
+      padding: 12rem 2.5rem 4rem;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .post-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .post-title {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+    }
+
+    .post-meta {
+      display: flex;
+      gap: 3rem;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+    }
+
+    .meta-item span {
+      display: block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      margin-bottom: 0.25rem;
+    }
+
+    .meta-item p {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* Content Area */
+    article.post-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 2.5rem 8rem;
+    }
+
+    .post-content p {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 2rem;
+      font-weight: 300;
+    }
+
+    .post-content h2 {
+      font-size: 28px;
+      font-weight: 400;
+      margin: 4rem 0 1.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .post-content h3 {
+      font-size: 20px;
+      font-weight: 500;
+      margin: 2.5rem 0 1rem;
+    }
+
+    .post-content blockquote {
+      border-left: 3px solid var(--black);
+      padding: 1rem 0 1rem 2rem;
+      margin: 3rem 0;
+      font-style: italic;
+      font-size: 22px;
+      color: var(--gray);
+    }
+
+    .post-content figure {
+      margin: 4rem -5rem;
+      background: #eee;
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    
+    /* Placeholder for technical diagrams or board shots */
+    .figure-placeholder {
+        color: var(--gray);
+        font-size: 11px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+    }
+
+    .post-content ul {
+      margin-bottom: 2rem;
+      padding-left: 1.5rem;
+    }
+
+    .post-content li {
+      font-size: 17px;
+      color: #444;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Footer / CTA */
+    .post-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 4rem;
+      margin-top: 6rem;
+      text-align: center;
+    }
+
+    .cta-box {
+      background: var(--black);
+      color: var(--white);
+      padding: 4rem 2rem;
+    }
+
+    .cta-box h3 {
+      font-size: 2rem;
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--white);
+      color: var(--black);
+      padding: 1rem 2.5rem;
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      header.post-header { padding-top: 8rem; }
+      .post-content figure { margin: 2rem 0; }
+      .post-meta { flex-direction: column; gap: 1.5rem; }
+      article.post-content { padding: 0 1.5rem 5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">ECA.</a>
+  <a href="../index.html#projects" class="back-link">← Back to Projects</a>
+</nav>
+
+<header class="post-header">
+  <span class="post-label">Engineering Journal — Vol. 03</span>
+  <h1 class="post-title">Precision Fit: Moving Complex Enclosure Geometry into KiCad.</h1>
+  
+  <div class="post-meta">
+    <div class="meta-item">
+      <span>Date</span>
+      <p>May 1, 2026</p>
+    </div>
+    <div class="meta-item">
+      <span>Category</span>
+      <p>PCB Design</p>
+    </div>
+    <div class="meta-item">
+      <span>Reading Time</span>
+      <p>5 Min Read</p>
+    </div>
+  </div>
+</header>
+
+<article class="post-content">
+  <p>You’ve done the heavy lifting. You’ve calculated your component clearances, finalized your PCB space requirements, and designed a killer enclosure in your CAD tool of choice. Now comes the moment of truth: translating that complex mechanical design into KiCad to shape your PCB.</p>
+
+  <p>If you’ve ever tried to replicate a complex enclosure shape using KiCad’s native drawing tools, you know the struggle. You usually end up with a basic square or a circle—fine for a prototype, but a nightmare for a precision enclosure fit.</p>
+
+  <figure>
+    <img src="lampside-post-cutout.webp" alt="Finished PCB with custom cutouts" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+  </figure>
+
+  <h2>The Problem: The "Standard Rectangle" Trap</h2>
+  <p>Most beginners start with a standard rectangular board because it's the default. However, a simple rectangle often leaves wasted space or, worse, physically interferes with the internal ribs and curves of a custom-designed housing.</p>
+  
+  <p>When you transition from a "good enough" prototype to a professional product, you need millimeter precision to ensure your hardware lives comfortably inside its shell.</p>
+
+  <figure>
+    <img src="lampside-pre-cutout.webp" alt="Standard rectangular board interference" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+  </figure>
+
+  <blockquote>
+    "Using a DXF import ensures that mounting holes, port cutouts, and rounded corners align perfectly—no more 'dremeling' the edges of your finished boards."
+  </blockquote>
+
+  <h3>A Step-by-Step Guide to Perfect Outlines</h3>
+  <p>Here is how to skip the frustration and convert your physical CAD dimensions into a KiCad board shape with absolute accuracy:</p>
+
+  <ul>
+    <li><strong>Step 1: Export from your CAD Tool:</strong> Don't try to "eye-ball" the measurements. In your software (Fusion 360, SolidWorks, or Inkscape), select the sketch representing your board perimeter and <strong>Export as a DXF</strong>.</li>
+    <li><strong>Step 2: Import into KiCad:</strong> Open the KiCad PCB Editor. Navigate to the top menu and select: <strong>File → Import → Graphics...</strong></li>
+    <li><strong>Step 3: Select Your File:</strong> In the dialog box, navigate to your exported DXF file.</li>
+  </ul>
+
+  <figure>
+    <img src="menu_select.webp" alt="KiCad Import Menu Selection" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+  </figure>
+
+  <h3>Refining the Import</h3>
+  <ul>
+    <li><strong>Step 4: Sync Your Units:</strong> This is the most critical step. Ensure the units in the import dialog match your CAD drawing (usually <strong>millimeters</strong>). If these don't match, your board will arrive either microscopic or the size of a dinner plate.</li>
+    <li><strong>Step 5: Assign the Correct Layer:</strong> Change the Graphic Layer dropdown to <strong>Edge.Cuts</strong>. This tells KiCad this shape is the actual physical boundary.</li>
+    <li><strong>Step 6: Finalize:</strong> Press OK and move your geometry into position.</li>
+  </ul>
+
+  <figure>
+    <img src="import_vector.webp" alt="Import Graphics Dialog Box Settings" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+  </figure>
+
+  <h3>Pro Tip: The Closed Loop Rule</h3>
+  <p>Lines on the <strong>Edge.Cuts</strong> layer tell the fabricator exactly where to mill the board. For the 3D viewer and the manufacturer to process the file correctly, <strong>make sure your DXF is a closed loop</strong> with no gaps between line segments.</p>
+
+  <figure>
+    <img src="outline.webp" alt="Finalized Complex PCB Outline" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+  </figure>
+
+  <h2>Why This Matters for Production</h2>
+  <p>When engineering for production, the relationship between the board and the enclosure is a first-class design requirement. Proper imports allow for:</p>
+  <ul>
+    <li><strong>Perfect Port Alignment:</strong> Ensuring USB or DC jacks line up with enclosure holes every time.</li>
+    <li><strong>Optimized Thermal Management:</strong> Maximizing board area for heat dissipation within tight spaces.</li>
+    <li><strong>Reliable Assembly:</strong> Guaranteeing mounting holes are exactly where they need to be to avoid mechanical stress.</li>
+  </ul>
+
+  <div class="post-footer">
+    <div class="cta-box">
+      <h3>Struggling with mechanical integration?</h3>
+      <p style="color: rgba(255,255,255,0.6); margin-bottom: 2rem;">We help teams bridge the gap between industrial design and electronics to ensure a flawless physical fit.</p>
+      <a href="mailto:info@ecadesign.co.uk" class="cta-btn">Start a Conversation</a>
+    </div>
+  </div>
+</article>
