@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VR5VFBVV13"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-VR5VFBVV13');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ECA Rapid — MVP Electronics Prototypes</title>
+<link rel="icon" href="assets/images/favpic.svg" type="image/svg+xml">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #f8f8f6;
+    --gray: #8a8a8a;
+    --border: #d0d0d0;
+    --accent: #e8e0d0;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', Helvetica Neue, sans-serif;
+    background: var(--white);
+    color: var(--black);
+    font-weight: 400;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 300;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2.5rem;
+    mix-blend-mode: difference;
+  }
+
+  .nav-logo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--white);
+    text-decoration: none;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 400;
+  }
+
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+  .nav-links a {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: var(--white);
+    text-decoration: none;
+    text-transform: uppercase;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+
+  .nav-links a:hover { opacity: 1; }
+
+  /* ── HAMBURGER BUTTON ── */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 5px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    position: relative;
+    z-index: 400;
+  }
+
+  .nav-hamburger span {
+    display: block;
+    height: 1px;
+    background: var(--white);
+    transition: width 0.3s ease, transform 0.3s ease, opacity 0.2s ease;
+    transform-origin: right center;
+  }
+
+  .nav-hamburger span:nth-child(1) { width: 24px; }
+  .nav-hamburger span:nth-child(2) { width: 16px; }
+  .nav-hamburger span:nth-child(3) { width: 20px; }
+
+  .nav-hamburger.open span:nth-child(1) { width: 22px; transform: rotate(-45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; width: 0; }
+  .nav-hamburger.open span:nth-child(3) { width: 22px; transform: rotate(45deg); }
+
+  /* ── MOBILE MENU OVERLAY ── */
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: var(--black);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2rem 2rem 6rem;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-12px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+
+  .mobile-menu.open { opacity: 1; pointer-events: all; transform: translateY(0); }
+
+  .mobile-menu-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  .mobile-nav-list { list-style: none; border-top: 1px solid rgba(255,255,255,0.1); }
+
+  .mobile-nav-list li {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .mobile-menu.open .mobile-nav-list li { opacity: 1; transform: translateY(0); }
+  .mobile-menu.open .mobile-nav-list li:nth-child(1) { transition-delay: 0.08s; }
+  .mobile-menu.open .mobile-nav-list li:nth-child(2) { transition-delay: 0.14s; }
+  .mobile-menu.open .mobile-nav-list li:nth-child(3) { transition-delay: 0.20s; }
+  .mobile-menu.open .mobile-nav-list li:nth-child(4) { transition-delay: 0.26s; }
+
+  .mobile-nav-list a {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.4rem 0;
+    font-size: clamp(1.6rem, 6vw, 2.4rem);
+    font-weight: 300; letter-spacing: -0.01em;
+    color: var(--white); text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .mobile-nav-list a:hover { opacity: 0.5; }
+  .mobile-nav-arr { font-size: 1rem; color: rgba(255,255,255,0.3); }
+
+  .mobile-menu-footer {
+    margin-top: 2.5rem; display: flex;
+    justify-content: space-between; align-items: flex-end;
+    opacity: 0; transform: translateY(12px);
+    transition: opacity 0.3s ease 0.4s, transform 0.3s ease 0.4s;
+  }
+
+  .mobile-menu.open .mobile-menu-footer { opacity: 1; transform: translateY(0); }
+
+  .mobile-menu-contact { display: flex; flex-direction: column; gap: 0.4rem; }
+  .mobile-menu-contact span { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+  .mobile-menu-contact a { font-size: 12px; letter-spacing: 0.05em; color: rgba(255,255,255,0.6); text-decoration: none; }
+
+  .mobile-cta {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--black); background: var(--white);
+    padding: 0.85rem 1.5rem; text-decoration: none; font-weight: 500;
+  }
+
+  /* ── TICKER ── */
+  .ticker {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    z-index: 100; background: var(--black);
+    padding: 0.5rem 0; overflow: hidden;
+  }
+
+  .ticker-track {
+    display: flex; white-space: nowrap;
+    animation: ticker 22s linear infinite;
+  }
+
+  .ticker-item {
+    font-size: 11px; letter-spacing: 0.15em; color: var(--white);
+    text-transform: uppercase; padding: 0 2rem; opacity: 0.6; flex-shrink: 0;
+  }
+
+  .ticker-dot { font-size: 11px; color: var(--white); opacity: 0.3; flex-shrink: 0; padding: 0 0.5rem; }
+
+  @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh; background: var(--black);
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 2.5rem 2.5rem 5rem;
+    position: relative; overflow: hidden;
+  }
+
+  .hero-grid-overlay {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  /* Diagonal speed line decoration */
+  .hero-speed-lines {
+    position: absolute;
+    top: 0; right: 0;
+    width: 45%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .hero-speed-lines::before {
+    content: '';
+    position: absolute;
+    top: -10%; right: -5%;
+    width: 1px; height: 130%;
+    background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.06) 30%, rgba(255,255,255,0.06) 70%, transparent);
+    transform: rotate(-12deg);
+    box-shadow: 80px 0 0 rgba(255,255,255,0.03), 160px 0 0 rgba(255,255,255,0.02), 240px 0 0 rgba(255,255,255,0.015);
+  }
+
+  .hero-badge {
+    position: absolute;
+    top: 8rem; right: 2.5rem;
+    font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 0.5rem 1rem;
+  }
+
+  .hero-label {
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); margin-bottom: 1.5rem;
+  }
+
+  .hero-headline {
+    font-size: clamp(3rem, 9vw, 9rem);
+    font-weight: 300; line-height: 0.95;
+    letter-spacing: -0.02em; color: var(--white);
+    margin-bottom: 3rem; max-width: 14ch;
+  }
+
+  .hero-headline em {
+    font-style: normal;
+    border-bottom: 2px solid rgba(255,255,255,0.3);
+  }
+
+  .hero-bottom {
+    display: flex; justify-content: space-between;
+    align-items: flex-end; gap: 2rem;
+  }
+
+  .hero-desc {
+    max-width: 38ch; font-size: 14px;
+    line-height: 1.7; color: rgba(255,255,255,0.55);
+    font-weight: 300;
+  }
+
+  .hero-cta {
+    display: inline-block; font-size: 11px;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--black); background: var(--white);
+    padding: 1rem 2rem; text-decoration: none;
+    font-weight: 500; transition: opacity 0.2s; flex-shrink: 0;
+  }
+
+  .hero-cta:hover { opacity: 0.85; }
+
+  .scroll-hint {
+    position: absolute; right: 2.5rem; top: 50%;
+    transform: translateY(-50%);
+    display: flex; flex-direction: column;
+    align-items: center; gap: 0.5rem;
+  }
+
+  .scroll-hint span {
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3); writing-mode: vertical-rl;
+  }
+
+  .scroll-line {
+    width: 1px; height: 60px;
+    background: rgba(255,255,255,0.2);
+    position: relative; overflow: hidden;
+  }
+
+  .scroll-line::after {
+    content: ''; position: absolute;
+    top: -100%; left: 0; width: 100%; height: 100%;
+    background: white; animation: scrollLine 1.8s ease-in-out infinite;
+  }
+
+  @keyframes scrollLine { 0% { top: -100%; } 100% { top: 100%; } }
+
+  /* ── SECTIONS ── */
+  section { padding: 6rem 2.5rem; border-top: 1px solid var(--border); }
+
+  .section-header {
+    display: flex; justify-content: space-between;
+    align-items: flex-start; margin-bottom: 4rem;
+  }
+
+  .section-tag { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); }
+  .section-num { font-size: 11px; letter-spacing: 0.1em; color: var(--gray); }
+
+  .section-title {
+    font-size: clamp(2rem, 4vw, 4rem); font-weight: 300;
+    letter-spacing: -0.02em; line-height: 1.1;
+    max-width: 20ch; margin-bottom: 1.5rem;
+  }
+
+  .section-body {
+    font-size: 15px; line-height: 1.7;
+    color: var(--gray); max-width: 55ch; font-weight: 300;
+  }
+
+  /* ── WHAT IS RAPID ── */
+  #rapid-intro { background: var(--white); }
+
+  .rapid-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6rem; align-items: start;
+  }
+
+  .rapid-stat-block {
+    display: flex; flex-direction: column; gap: 3rem;
+    padding-top: 1rem;
+  }
+
+  .rapid-stat {
+    border-top: 1px solid var(--border); padding-top: 1.5rem;
+  }
+
+  .rapid-stat-num {
+    font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 300;
+    letter-spacing: -0.03em; line-height: 1; margin-bottom: 0.5rem;
+  }
+
+  .rapid-stat-label {
+    font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--gray);
+  }
+
+  /* ── HOW IT WORKS ── */
+  #how-it-works { background: var(--black); border-top: none; }
+
+  #how-it-works .section-tag { color: rgba(255,255,255,0.4); }
+  #how-it-works .section-num { color: rgba(255,255,255,0.4); }
+  #how-it-works .section-title { color: var(--white); }
+  #how-it-works .section-body { color: rgba(255,255,255,0.45); }
+
+  .process-list {
+    border-top: 1px solid rgba(255,255,255,0.12);
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .process-list.visible { opacity: 1; transform: translateY(0); }
+
+  .process-item {
+    display: grid; grid-template-columns: 4rem 1fr 1fr;
+    gap: 3rem; align-items: start;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .process-num {
+    font-size: 11px; letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.3); padding-top: 0.25rem;
+  }
+
+  .process-name {
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem); font-weight: 300;
+    letter-spacing: -0.01em; color: var(--white); line-height: 1.2;
+  }
+
+  .process-desc {
+    font-size: 13px; line-height: 1.7;
+    color: rgba(255,255,255,0.45); font-weight: 300;
+  }
+
+  .process-timing {
+    display: inline-block; margin-top: 0.75rem;
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 0.3rem 0.7rem;
+  }
+
+  /* ── WHO IS THIS FOR ── */
+  #for-who { background: var(--white); }
+
+  .for-who-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .for-who-grid.visible { opacity: 1; transform: translateY(0); }
+
+  .for-who-card {
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 2.5rem; position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .for-who-card::before {
+    content: ''; position: absolute;
+    bottom: 0; left: 0; width: 0; height: 2px;
+    background: var(--black); transition: width 0.4s ease;
+  }
+
+  .for-who-card:hover::before { width: 100%; }
+  .for-who-card:hover { background: #f0f0ee; }
+
+  .for-who-num { font-size: 11px; letter-spacing: 0.15em; color: var(--gray); margin-bottom: 2rem; display: block; }
+
+  .for-who-title { font-size: 1.5rem; font-weight: 400; letter-spacing: -0.01em; margin-bottom: 1.25rem; line-height: 1.2; }
+
+  .for-who-desc { font-size: 13px; line-height: 1.7; color: var(--gray); font-weight: 300; }
+
+  .for-who-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
+
+  .tag {
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    border: 1px solid var(--border); padding: 0.3rem 0.7rem; color: var(--gray);
+  }
+
+  /* ── DELIVERABLES ── */
+  #deliverables { background: var(--accent); border-top: none; }
+
+  .deliverables-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; border-top: 1px solid rgba(0,0,0,0.1);
+    border-left: 1px solid rgba(0,0,0,0.1);
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .deliverables-grid.visible { opacity: 1; transform: translateY(0); }
+
+  .deliverable-item {
+    border-right: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding: 2.5rem;
+    display: flex; gap: 1.5rem; align-items: flex-start;
+  }
+
+  .deliverable-check {
+    width: 18px; height: 18px; flex-shrink: 0;
+    border: 1px solid var(--black); margin-top: 0.15rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+  }
+
+  .deliverable-text {}
+  .deliverable-name { font-size: 14px; font-weight: 500; margin-bottom: 0.4rem; letter-spacing: -0.01em; }
+  .deliverable-note { font-size: 12px; color: var(--gray); line-height: 1.5; font-weight: 300; }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--white); }
+
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6rem; align-items: start;
+  }
+
+  .contact-cta-link {
+    display: inline-block; font-size: 11px;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--white); background: var(--black);
+    padding: 1rem 2rem; text-decoration: none;
+    font-weight: 500; transition: opacity 0.2s; margin-top: 2.5rem;
+  }
+
+  .contact-cta-link:hover { opacity: 0.8; }
+
+  .social-list { display: flex; flex-direction: column; }
+
+  .social-link {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 0; border-bottom: 1px solid var(--border);
+    text-decoration: none; color: var(--black);
+    position: relative; overflow: hidden; transition: opacity 0.2s;
+  }
+
+  .social-link:first-child { border-top: 1px solid var(--border); }
+  .social-link:hover { opacity: 0.55; }
+
+  .social-link::after {
+    content: ''; position: absolute;
+    bottom: -1px; left: 0; width: 0; height: 1px;
+    background: var(--black); transition: width 0.4s ease;
+  }
+
+  .social-link:hover::after { width: 100%; }
+
+  .social-label { font-size: clamp(1.4rem, 2.5vw, 2.2rem); font-weight: 300; letter-spacing: -0.01em; }
+  .social-right { display: flex; align-items: center; gap: 1.5rem; }
+  .social-handle { font-size: 11px; letter-spacing: 0.1em; color: var(--gray); text-transform: uppercase; }
+  .social-arr { font-size: 16px; color: var(--gray); transition: transform 0.25s ease; display: inline-block; }
+  .social-link:hover .social-arr { transform: translate(3px, -3px); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--black); border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 2rem 2.5rem 5rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .footer-left { display: flex; flex-direction: column; gap: 0.4rem; }
+
+  .footer-brand { font-size: 13px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--white); font-weight: 500; }
+  .footer-copy { font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 0.05em; }
+
+  .footer-right { display: flex; align-items: center; gap: 2rem; }
+
+  .footer-soc {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s;
+  }
+
+  .footer-soc:hover { color: rgba(255,255,255,0.9); }
+
+  .footer-cta {
+    font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--black); background: var(--white);
+    padding: 0.85rem 1.75rem; text-decoration: none; font-weight: 500; transition: opacity 0.2s;
+  }
+
+  .footer-cta:hover { opacity: 0.85; }
+
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1.25rem 1.5rem; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+    .hero-badge { display: none; }
+    #hero { padding: 2rem 1.5rem 5rem; }
+    section { padding: 4rem 1.5rem; }
+    .rapid-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .for-who-grid { grid-template-columns: 1fr; }
+    .deliverables-grid { grid-template-columns: 1fr; }
+    .process-item { grid-template-columns: 3rem 1fr; gap: 1.5rem; }
+    .process-desc { grid-column: 1 / -1; padding-left: 4.5rem; }
+    .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+    footer { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+    .scroll-hint { display: none; }
+    .hero-bottom { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MOBILE MENU OVERLAY -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-grid"></div>
+  <nav style="position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;mix-blend-mode:normal;">
+    <a href="index.html" class="nav-logo" style="font-size:24px;">ECA.</a>
+  </nav>
+  <ul class="mobile-nav-list">
+    <li><a href="index.html" onclick="closeMenu()">ECA Design <span class="mobile-nav-arr">↗</span></a></li>
+    <li><a href="#how-it-works" onclick="closeMenu()">How It Works <span class="mobile-nav-arr">↗</span></a></li>
+    <li><a href="#for-who" onclick="closeMenu()">Who It's For <span class="mobile-nav-arr">↗</span></a></li>
+    <li><a href="#contact" onclick="closeMenu()">Contact <span class="mobile-nav-arr">↗</span></a></li>
+  </ul>
+  <div class="mobile-menu-footer">
+    <div class="mobile-menu-contact">
+      <span>Get in touch</span>
+      <a href="mailto:info@ecadesign.co.uk">info@ecadesign.co.uk</a>
+    </div>
+    <a href="mailto:info@ecadesign.co.uk?subject=ECA Rapid Enquiry" class="mobile-cta">Get a prototype</a>
+  </div>
+</div>
+
+<!-- MAIN NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">ECA.</a>
+  <ul class="nav-links">
+    <li><a href="index.html">ECA Design</a></li>
+    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="#for-who">Who It's For</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-overlay"></div>
+  <div class="hero-speed-lines"></div>
+  <div class="hero-badge">A service by ECA Design</div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+  <p class="hero-label">MVP Electronics Prototyping — Fast</p>
+  <h1 class="hero-headline">From idea<br>to <em>working<br>hardware.</em></h1>
+  <div class="hero-bottom">
+    <p class="hero-desc">ECA Rapid turns your concept into a functional electronics prototype — built to impress investors, demo at Kickstarter, or prove your idea works. No fluff. No delays.</p>
+    <a href="mailto:info@ecadesign.co.uk?subject=ECA Rapid Enquiry" class="hero-cta">Get a prototype</a>
+  </div>
+</section>
+
+<!-- WHAT IS RAPID -->
+<section id="rapid-intro">
+  <div class="section-header fade-up">
+    <p class="section-tag">What is ECA Rapid</p>
+    <span class="section-num">(01)</span>
+  </div>
+  <div class="rapid-grid">
+    <div class="fade-up">
+      <h2 class="section-title">The fastest way to a working prototype.</h2>
+      <p class="section-body" style="margin-bottom:1.5rem;">Investors need to see hardware that works. Kickstarter backers need to believe in your product. ECA Rapid is a streamlined prototyping service focused on delivering a functional, demonstrable electronics MVP — quickly and without unnecessary overhead.</p>
+      <p class="section-body">We take your concept, scope it ruthlessly to the minimum viable hardware, and build it. The result is a real, working board — not a render, not a mock-up — ready to put in front of people that matter.</p>
+    </div>
+    <div class="rapid-stat-block fade-up">
+      <div class="rapid-stat">
+        <div class="rapid-stat-num">2–4</div>
+        <div class="rapid-stat-label">Weeks typical turnaround</div>
+      </div>
+      <div class="rapid-stat">
+        <div class="rapid-stat-num">MVP</div>
+        <div class="rapid-stat-label">Focus — only what the demo needs</div>
+      </div>
+      <div class="rapid-stat">
+        <div class="rapid-stat-num">1</div>
+        <div class="rapid-stat-label">Working prototype, ready to present</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="section-header fade-up">
+    <p class="section-tag">How It Works</p>
+    <span class="section-num">(02)</span>
+  </div>
+  <div class="fade-up" style="margin-bottom: 4rem;">
+    <h2 class="section-title">Four steps to hardware.</h2>
+    <p class="section-body">A focused, no-waste process designed to move fast without cutting corners on the things that count.</p>
+  </div>
+  <div class="process-list">
+
+    <div class="process-item">
+      <span class="process-num">01</span>
+      <div>
+        <div class="process-name">Brief & Scope</div>
+        <span class="process-timing">Day 1–2</span>
+      </div>
+      <p class="process-desc">You tell us what the product does, what it needs to demonstrate, and who it's for. We define the minimal feature set — stripping everything that doesn't serve the demo. A fixed scope keeps the timeline tight and the build focused.</p>
+    </div>
+
+    <div class="process-item">
+      <span class="process-num">02</span>
+      <div>
+        <div class="process-name">Design</div>
+        <span class="process-timing">Week 1–2</span>
+      </div>
+      <p class="process-desc">Schematic capture, component selection, and PCB layout. We design for speed-to-demo rather than volume production — choosing proven parts, keeping the board compact, and flagging any decisions that could limit future scaling.</p>
+    </div>
+
+    <div class="process-item">
+      <span class="process-num">03</span>
+      <div>
+        <div class="process-name">Build & Bring-up</div>
+        <span class="process-timing">Week 2–3</span>
+      </div>
+      <p class="process-desc">Boards are fabricated, assembled, and brought up in our lab. We write the minimal firmware needed to demonstrate core functionality — sensor reads, connectivity, display output, or whatever the demo demands.</p>
+    </div>
+
+    <div class="process-item">
+      <span class="process-num">04</span>
+      <div>
+        <div class="process-name">Handover</div>
+        <span class="process-timing">Week 3–4</span>
+      </div>
+      <p class="process-desc">You receive the working prototype along with all design files, a clear summary of what the hardware does, and notes on the path from MVP to production. Ready to demo, present, or pitch on day one.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHO IS THIS FOR -->
+<section id="for-who">
+  <div class="section-header fade-up">
+    <p class="section-tag">Who It's For</p>
+    <span class="section-num">(03)</span>
+  </div>
+  <div class="fade-up" style="margin-bottom: 4rem;">
+    <h2 class="section-title">Built for founders, not factories.</h2>
+    <p class="section-body">ECA Rapid is designed for the stage before production — when you need proof, not perfection.</p>
+  </div>
+  <div class="for-who-grid">
+    <div class="for-who-card">
+      <span class="for-who-num">01</span>
+      <h3 class="for-who-title">Kickstarter &amp; Crowdfunding</h3>
+      <p class="for-who-desc">A working prototype on camera is the difference between a funded campaign and a missed one. We build hardware that demonstrates convincingly — so your backers see a real product, not a promise.</p>
+      <div class="for-who-tags">
+        <span class="tag">Demo-ready</span><span class="tag">Crowdfunding</span><span class="tag">Consumer</span>
+      </div>
+    </div>
+    <div class="for-who-card">
+      <span class="for-who-num">02</span>
+      <h3 class="for-who-title">Investor Pitch</h3>
+      <p class="for-who-desc">Hardware in the room changes a pitch. Whether it's a seed round or a Series A, having a functional prototype hands investors something tangible — and signals that the team can execute.</p>
+      <div class="for-who-tags">
+        <span class="tag">Seed</span><span class="tag">Series A</span><span class="tag">Deep Tech</span>
+      </div>
+    </div>
+    <div class="for-who-card">
+      <span class="for-who-num">03</span>
+      <h3 class="for-who-title">Concept Validation</h3>
+      <p class="for-who-desc">Not sure if your idea works electrically? We scope the core question, build the minimum hardware to answer it, and give you data — not guesswork — to decide what comes next.</p>
+      <div class="for-who-tags">
+        <span class="tag">Feasibility</span><span class="tag">R&amp;D</span><span class="tag">Early Stage</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DELIVERABLES -->
+<section id="deliverables">
+  <div class="section-header fade-up">
+    <p class="section-tag">What You Receive</p>
+    <span class="section-num">(04)</span>
+  </div>
+  <div class="fade-up" style="margin-bottom: 4rem;">
+    <h2 class="section-title">Everything you need to pitch.</h2>
+    <p class="section-body">Every ECA Rapid engagement delivers a fixed set of outputs — so you always know exactly what you're getting.</p>
+  </div>
+  <div class="deliverables-grid">
+    <div class="deliverable-item">
+      <div class="deliverable-check">✓</div>
+      <div class="deliverable-text">
+        <div class="deliverable-name">Assembled PCB Prototype</div>
+        <div class="deliverable-note">A real, populated board — not a dev-kit hack. Built and tested in our lab, ready to power on and demo.</div>
+      </div>
+    </div>
+    <div class="deliverable-item">
+      <div class="deliverable-check">✓</div>
+      <div class="deliverable-text">
+        <div class="deliverable-name">Working Demo Firmware</div>
+        <div class="deliverable-note">Minimal firmware to demonstrate the core functionality. Sensor data, connectivity, display — whatever the brief demands.</div>
+      </div>
+    </div>
+    <div class="deliverable-item">
+      <div class="deliverable-check">✓</div>
+      <div class="deliverable-text">
+        <div class="deliverable-name">Full Design Files</div>
+        <div class="deliverable-note">Schematic, PCB layout, BOM, and Gerbers — all yours. No lock-in. You own everything we produce.</div>
+      </div>
+    </div>
+    <div class="deliverable-item">
+      <div class="deliverable-check">✓</div>
+      <div class="deliverable-text">
+        <div class="deliverable-name">Production Roadmap</div>
+        <div class="deliverable-note">A plain-English summary of what would need to change to move from prototype to volume production — so your next step is clear.</div>
+      </div>
+    </div>
+    <div class="deliverable-item">
+      <div class="deliverable-check">✓</div>
+      <div class="deliverable-text">
+        <div class="deliverable-name">Technical Documentation</div>
+        <div class="deliverable-note">Board bring-up notes, test results, and hardware description. Useful for onboarding engineers or briefing a firmware team.</div>
+      </div>
+    </div>
+    <div class="deliverable-item">
+      <div class="deliverable-check">✓</div>
+      <div class="deliverable-text">
+        <div class="deliverable-name">Post-delivery Support</div>
+        <div class="deliverable-note">Two weeks of email support after handover. Questions, demo prep, or investor Q&A — we're available while it matters most.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header fade-up">
+    <p class="section-tag">Contact</p>
+    <span class="section-num">(05)</span>
+  </div>
+  <div class="contact-grid">
+    <div class="fade-up">
+      <h2 class="section-title">Tell us about your idea.</h2>
+      <p class="section-body">Got a concept you want to make real? Tell us what it does, when you need it, and what you're trying to demonstrate. We'll come back with a clear scope and timeline within one business day.</p>
+      <a href="mailto:info@ecadesign.co.uk?subject=ECA Rapid Enquiry" class="contact-cta-link">info@ecadesign.co.uk &nbsp;↗</a>
+    </div>
+    <div class="fade-up">
+      <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:0;">Find us online</p>
+      <div class="social-list">
+        <a href="https://www.linkedin.com/company/ecadesign" target="_blank" class="social-link">
+          <span class="social-label">LinkedIn</span>
+          <div class="social-right">
+            <span class="social-handle">ECA Design</span>
+            <span class="social-arr">↗</span>
+          </div>
+        </a>
+        <a href="https://www.instagram.com/e.c.adesign" target="_blank" class="social-link">
+          <span class="social-label">Instagram</span>
+          <div class="social-right">
+            <span class="social-handle">@ecadesign</span>
+            <span class="social-arr">↗</span>
+          </div>
+        </a>
+        <a href="mailto:info@ecadesign.co.uk" class="social-link">
+          <span class="social-label">Email</span>
+          <div class="social-right">
+            <span class="social-handle">info@ecadesign.co.uk</span>
+            <span class="social-arr">↗</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">
+    <span class="footer-brand">ECA Rapid</span>
+    <span class="footer-copy">© 2025 ECA Design</span>
+    <span class="footer-copy">info@ecadesign.co.uk</span>
+  </div>
+  <div class="footer-right">
+    <a href="index.html" class="footer-soc">ECA Design</a>
+    <a href="https://www.linkedin.com/company/ecadesign" target="_blank" class="footer-soc">LinkedIn</a>
+    <a href="mailto:info@ecadesign.co.uk?subject=ECA Rapid Enquiry" class="footer-cta">Get a prototype</a>
+  </div>
+</footer>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">2–4 Week Turnaround</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">MVP Electronics</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Investor Ready</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Kickstarter Prototypes</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">PCB Design</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Demo Firmware</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Concept to Hardware</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">2–4 Week Turnaround</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">MVP Electronics</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Investor Ready</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Kickstarter Prototypes</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">PCB Design</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Demo Firmware</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Concept to Hardware</span><span class="ticker-dot">·</span>
+  </div>
+</div>
+
+<script>
+  /* ── MOBILE MENU ── */
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const btn  = document.getElementById('hamburger');
+    const open = menu.classList.toggle('open');
+    btn.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  function closeMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const btn  = document.getElementById('hamburger');
+    menu.classList.remove('open');
+    btn.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
+  /* ── SCROLL ANIMATIONS ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.fade-up, .process-list, .for-who-grid, .deliverables-grid').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.for-who-card').forEach((card, i) => {
+    card.style.transitionDelay = `${i * 0.12}s`;
+  });
+</script>
+</body>
+</html>
