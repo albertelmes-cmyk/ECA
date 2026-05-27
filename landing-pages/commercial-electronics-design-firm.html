@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Commercial Electronics Design UK — ECA Design | PCB Design & Product Development</title>
+  <meta name="description" content="ECA Design delivers commercial electronics design, PCB layout, and product development for UK companies. From concept to production-ready hardware — no corners cut.">
+  <link rel="icon" href="favpic.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://www.ecadesign.co.uk/commercial-electronics-design">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #f8f8f6;
+      --gray: #8a8a8a;
+      --border: #d0d0d0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', Helvetica Neue, sans-serif;
+      background: var(--white);
+      color: var(--black);
+      font-weight: 400;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2.5rem;
+      mix-blend-mode: difference;
+    }
+
+    .nav-logo {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+    .nav-links a {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+
+    .nav-links a:hover { opacity: 1; }
+
+    /* TICKER */
+    .ticker {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--black);
+      padding: 0.5rem 0;
+      overflow: hidden;
+    }
+
+    .ticker-track {
+      display: flex;
+      white-space: nowrap;
+      animation: ticker 24s linear infinite;
+    }
+
+    .ticker-item {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--white);
+      text-transform: uppercase;
+      padding: 0 2rem;
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    .ticker-dot {
+      font-size: 11px;
+      color: var(--white);
+      opacity: 0.3;
+      flex-shrink: 0;
+      padding: 0 0.5rem;
+    }
+
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2.5rem 2.5rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-headline {
+      font-size: clamp(3rem, 8.5vw, 8.5rem);
+      font-weight: 300;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-bottom: 3rem;
+      max-width: 16ch;
+    }
+
+    .hero-headline em {
+      font-style: normal;
+      border-bottom: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .hero-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 2rem;
+    }
+
+    .hero-desc {
+      max-width: 42ch;
+      font-size: 14px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.55);
+      font-weight: 300;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--white);
+      padding: 1rem 2rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+      flex-shrink: 0;
+    }
+
+    .hero-cta:hover { opacity: 0.85; }
+
+    .scroll-hint {
+      position: absolute;
+      right: 2.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .scroll-hint span {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      writing-mode: vertical-rl;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background: rgba(255,255,255,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: -100%; left: 0;
+      width: 100%; height: 100%;
+      background: white;
+      animation: scrollLine 1.8s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0% { top: -100%; }
+      100% { top: 100%; }
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 6rem 2.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 4rem;
+    }
+
+    .section-tag {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    .section-num {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 4rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      max-width: 22ch;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-body {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--gray);
+      max-width: 55ch;
+      font-weight: 300;
+    }
+
+    /* SERVICES GRID */
+    #services { background: var(--white); }
+
+    .specialties-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .specialties-grid.visible { opacity: 1; transform: translateY(0); }
+
+    .specialty-card {
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .specialty-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--black);
+      transition: width 0.4s ease;
+    }
+
+    .specialty-card:hover::before { width: 100%; }
+    .specialty-card:hover { background: #f0f0ee; }
+
+    .specialty-num {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--gray);
+      margin-bottom: 2rem;
+      display: block;
+    }
+
+    .specialty-title {
+      font-size: 1.5rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.25rem;
+      line-height: 1.2;
+    }
+
+    .specialty-desc {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--gray);
+      font-weight: 300;
+    }
+
+    .specialty-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 2rem;
+    }
+
+    .tag {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.7rem;
+      color: var(--gray);
+    }
+
+    /* PROBLEMS */
+    #problems {
+      background: var(--black);
+      color: var(--white);
+      border-top: none;
+    }
+
+    #problems .section-tag { color: rgba(255,255,255,0.4); }
+    #problems .section-num { color: rgba(255,255,255,0.4); }
+    #problems .section-title { color: var(--white); }
+    #problems .section-body { color: rgba(255,255,255,0.45); }
+
+    .problems-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      border-left: 1px solid rgba(255,255,255,0.12);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .problems-grid.visible { opacity: 1; transform: translateY(0); }
+
+    .problem-card {
+      border-right: 1px solid rgba(255,255,255,0.12);
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      padding: 3rem 2.5rem;
+      position: relative;
+    }
+
+    .problem-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 2px; height: 0;
+      background: var(--white);
+      transition: height 0.4s ease;
+    }
+
+    .problem-card:hover::after { height: 100%; }
+
+    .problem-icon {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.25);
+      margin-bottom: 1.75rem;
+      display: block;
+      text-transform: uppercase;
+    }
+
+    .problem-title {
+      font-size: 1.3rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+      line-height: 1.25;
+      color: var(--white);
+    }
+
+    .problem-desc {
+      font-size: 13px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.5);
+      font-weight: 300;
+    }
+
+    /* PROCESS */
+    #process { background: var(--white); }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .process-steps.visible { opacity: 1; transform: translateY(0); }
+
+    .process-step {
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      position: relative;
+    }
+
+    .step-num {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--gray);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .step-title {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+
+    .step-desc {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--gray);
+      font-weight: 300;
+    }
+
+    .step-arrow {
+      position: absolute;
+      top: 50%;
+      right: -12px;
+      transform: translateY(-50%);
+      font-size: 14px;
+      color: var(--border);
+      z-index: 1;
+      background: var(--white);
+      padding: 0.2rem;
+      line-height: 1;
+    }
+
+    .process-step:last-child .step-arrow { display: none; }
+
+    /* CASE STUDY */
+    #case-study {
+      background: var(--black);
+      color: var(--white);
+      border-top: none;
+    }
+
+    #case-study .section-tag { color: rgba(255,255,255,0.4); }
+    #case-study .section-num { color: rgba(255,255,255,0.4); }
+    #case-study .section-title { color: var(--white); }
+
+    .case-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .case-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .case-title {
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--white);
+      margin-bottom: 2rem;
+    }
+
+    .case-body {
+      font-size: 14px;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.55);
+      font-weight: 300;
+      margin-bottom: 2rem;
+    }
+
+    .case-meta-block {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      padding-top: 2.5rem;
+    }
+
+    .case-meta-item { display: flex; flex-direction: column; gap: 0.35rem; }
+
+    .case-meta-label {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .case-meta-value {
+      font-size: 13px;
+      color: rgba(255,255,255,0.7);
+      font-weight: 300;
+    }
+
+    .case-result {
+      border-left: 2px solid rgba(255,255,255,0.15);
+      padding-left: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .case-result-label {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .case-result-text {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    /* CTA */
+    #cta { background: var(--white); }
+
+    .cta-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 4rem;
+    }
+
+    .cta-cta-link {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: var(--black);
+      padding: 1rem 2rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+      flex-shrink: 0;
+    }
+
+    .cta-cta-link:hover { opacity: 0.8; }
+
+    .cta-note {
+      font-size: 12px;
+      color: var(--gray);
+      margin-top: 1rem;
+      letter-spacing: 0.04em;
+    }
+
+    /* CONTACT */
+    #contact { background: var(--white); border-top: 1px solid var(--border); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .contact-cta-link {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: var(--black);
+      padding: 1rem 2rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+      margin-top: 2.5rem;
+    }
+
+    .contact-cta-link:hover { opacity: 0.8; }
+
+    .social-list { display: flex; flex-direction: column; }
+
+    .social-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--black);
+      position: relative;
+      overflow: hidden;
+      transition: opacity 0.2s;
+    }
+
+    .social-link:first-child { border-top: 1px solid var(--border); }
+    .social-link:hover { opacity: 0.55; }
+
+    .social-label {
+      font-size: clamp(1.4rem, 2.5vw, 2.2rem);
+      font-weight: 300;
+      letter-spacing: -0.01em;
+    }
+
+    .social-right { display: flex; align-items: center; gap: 1.5rem; }
+
+    .social-handle {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      text-transform: uppercase;
+    }
+
+    .social-arr {
+      font-size: 16px;
+      color: var(--gray);
+      transition: transform 0.25s ease;
+      display: inline-block;
+    }
+
+    .social-link:hover .social-arr { transform: translate(3px, -3px); }
+
+    /* FOOTER */
+    footer {
+      background: var(--black);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 2rem 2.5rem 5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-left { display: flex; flex-direction: column; gap: 0.4rem; }
+
+    .footer-brand {
+      font-size: 13px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    .footer-copy {
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-right { display: flex; align-items: center; gap: 2rem; }
+
+    .footer-soc {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-soc:hover { color: rgba(255,255,255,0.9); }
+
+    .footer-cta {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--white);
+      padding: 0.85rem 1.75rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .footer-cta:hover { opacity: 0.85; }
+
+    /* ANIMATIONS */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* STAT ROW */
+    .stat-row {
+      display: flex;
+      gap: 4rem;
+      border-top: 1px solid var(--border);
+      padding-top: 3rem;
+      margin-top: 3rem;
+    }
+
+    .stat-item { display: flex; flex-direction: column; gap: 0.4rem; }
+
+    .stat-num {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .process-steps { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1.25rem 1.5rem; }
+      .nav-links { display: none; }
+      #hero { padding: 2rem 1.5rem 5rem; }
+      section { padding: 4rem 1.5rem; }
+      .specialties-grid { grid-template-columns: 1fr; }
+      .problems-grid { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr; }
+      .step-arrow { display: none; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .case-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .cta-inner { flex-direction: column; align-items: flex-start; }
+      footer { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+      .scroll-hint { display: none; }
+      .hero-bottom { flex-direction: column; align-items: flex-start; }
+      .stat-row { gap: 2rem; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">ECA.</a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-overlay"></div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+  <p class="hero-label">Commercial Electronics Design — London, UK</p>
+  <h1 class="hero-headline">Electronics<br>built for<br><em>production.</em></h1>
+  <div class="hero-bottom">
+    <p class="hero-desc">From initial specification to production-ready hardware. We handle commercial electronics design, PCB layout, and full product development for companies that need it done right the first time.</p>
+    <a href="mailto:info@ecadesign.co.uk" class="hero-cta">Start a project</a>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-header fade-up">
+    <p class="section-tag">Services</p>
+    <span class="section-num">(02)</span>
+  </div>
+  <div class="fade-up" style="margin-bottom: 4rem;">
+    <h2 class="section-title">Electronics product development, end to end.</h2>
+    <p class="section-body">We work with commercial clients across industrial, consumer, and medical sectors — taking hardware from concept through to manufacture-ready deliverables.</p>
+    <div class="stat-row">
+      <div class="stat-item">
+        <span class="stat-num">4+</span>
+        <span class="stat-label">Sectors served</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">12+</span>
+        <span class="stat-label">Products shipped</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">100%</span>
+        <span class="stat-label">In-house design</span>
+      </div>
+    </div>
+  </div>
+  <div class="specialties-grid">
+    <div class="specialty-card">
+      <span class="specialty-num">01</span>
+      <h3 class="specialty-title">PCB Design for Production</h3>
+      <p class="specialty-desc">We design multi-layer boards with manufacturability as a first-class constraint — not an afterthought. Every layout accounts for real-world tolerances, thermal performance, and assembly yield. We deliver Gerbers your manufacturer can actually build, with controlled impedance, DFM rules enforced, and BOM validated against live stock.</p>
+      <div class="specialty-tags">
+        <span class="tag">Multi-layer</span><span class="tag">High-speed</span><span class="tag">DFM</span><span class="tag">Thermal</span><span class="tag">Signal Integrity</span>
+      </div>
+    </div>
+    <div class="specialty-card">
+      <span class="specialty-num">02</span>
+      <h3 class="specialty-title">Electronics Product Development</h3>
+      <p class="specialty-desc">Full-cycle electronics product development from specification through production-ready prototype. We handle architecture decisions, component selection, schematic capture, layout, and bring-up — keeping cost and production complexity front of mind throughout. Firmware integration and production test coverage included where needed.</p>
+      <div class="specialty-tags">
+        <span class="tag">Concept to prototype</span><span class="tag">BOM optimisation</span><span class="tag">Firmware</span><span class="tag">Testing</span>
+      </div>
+    </div>
+    <div class="specialty-card">
+      <span class="specialty-num">03</span>
+      <h3 class="specialty-title">RF & Wireless Integration</h3>
+      <p class="specialty-desc">Wireless is where commercial electronics designs most often fail. We do the antenna design, impedance matching, and link budget analysis properly — simulated, prototyped, and measured. Whether it's Sub-GHz LPWAN, Bluetooth LE, or 2.4 GHz Wi-Fi, we validate before you commit to tooling.</p>
+      <div class="specialty-tags">
+        <span class="tag">Antenna design</span><span class="tag">LoRa / LPWAN</span><span class="tag">Bluetooth LE</span><span class="tag">Wi-Fi</span>
+      </div>
+    </div>
+    <div class="specialty-card">
+      <span class="specialty-num">04</span>
+      <h3 class="specialty-title">Design for Manufacture (DFM)</h3>
+      <p class="specialty-desc">A design that can't be manufactured at cost is not a finished design. We apply DFM principles from day one — component package choices, placement rules, panelisation, test point access, and assembly yield. We work directly with your CM or help you select one, so there are no surprises at production.</p>
+      <div class="specialty-tags">
+        <span class="tag">DFM review</span><span class="tag">Panelisation</span><span class="tag">CM liaison</span><span class="tag">Cost reduction</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMS -->
+<section id="problems">
+  <div class="section-header fade-up">
+    <p class="section-tag">Problems We Solve</p>
+    <span class="section-num">(03)</span>
+  </div>
+  <div class="fade-up" style="margin-bottom: 4rem;">
+    <h2 class="section-title">Where commercial electronics projects actually fail.</h2>
+    <p class="section-body">Most hardware failures are predictable. They come from the same set of shortcuts taken early in the design process. We've seen them all — and we know how to design around them.</p>
+  </div>
+  <div class="problems-grid">
+    <div class="problem-card">
+      <span class="problem-icon">Issue 01</span>
+      <h3 class="problem-title">EMC failures at pre-compliance</h3>
+      <p class="problem-desc">Boards that radiate because decoupling wasn't properly placed, return paths weren't considered, or high-frequency signals were routed like DC. EMC is not something you fix at the end — it's baked into every layer stackup decision, trace route, and ground pour from the start.</p>
+    </div>
+    <div class="problem-card">
+      <span class="problem-icon">Issue 02</span>
+      <h3 class="problem-title">RF designs that don't work in the field</h3>
+      <p class="problem-desc">Antenna placement that kills range. Ground plane geometry that shifts resonance. Enclosures that attenuate 6 dB of your link budget before the product leaves the building. Wireless performance must be measured in the final form factor — not assumed from a datasheet.</p>
+    </div>
+    <div class="problem-card">
+      <span class="problem-icon">Issue 03</span>
+      <h3 class="problem-title">Designs that can't be assembled reliably</h3>
+      <p class="problem-desc">Fine-pitch components with no thermal relief. Pads that tombstone under reflow. Copper pour that causes solder bridging at volume. A design that passes prototype bring-up at low quantities often fails completely when assembly lines encounter real-world variance at scale.</p>
+    </div>
+    <div class="problem-card">
+      <span class="problem-icon">Issue 04</span>
+      <h3 class="problem-title">Cost overruns from late-stage redesigns</h3>
+      <p class="problem-desc">The bill for ignoring manufacturability is always paid eventually — usually during a spin 2 or 3. We eliminate this by treating DFM, BOM cost, and component lead times as hard constraints from day one, not as post-design review comments.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-header fade-up">
+    <p class="section-tag">Our Process</p>
+    <span class="section-num">(04)</span>
+  </div>
+  <div class="fade-up" style="margin-bottom: 4rem;">
+    <h2 class="section-title">Structured. No surprises.</h2>
+    <p class="section-body">Every commercial electronics project follows a disciplined sequence. Each stage has a defined deliverable — so you always know where your product stands.</p>
+  </div>
+  <div class="process-steps">
+    <div class="process-step">
+      <span class="step-num">01</span>
+      <h3 class="step-title">Requirements & Feasibility</h3>
+      <p class="step-desc">We establish the real constraints: power budget, form factor, connectivity, regulatory targets, production volume, and unit cost ceiling. If there's a fundamental conflict, we find it here — not during layout.</p>
+      <span class="step-arrow">→</span>
+    </div>
+    <div class="process-step">
+      <span class="step-num">02</span>
+      <h3 class="step-title">Architecture & Schematic</h3>
+      <p class="step-desc">Block-level architecture, component selection with availability checked, and full schematic capture. BOM costed before layout begins. Review gate with client before proceeding.</p>
+      <span class="step-arrow">→</span>
+    </div>
+    <div class="process-step">
+      <span class="step-num">03</span>
+      <h3 class="step-title">PCB Layout</h3>
+      <p class="step-desc">Layer stackup defined, placement optimised for assembly and thermal, routing completed with signal integrity rules enforced. DFM check prior to release. Full Gerber and fab package output.</p>
+      <span class="step-arrow">→</span>
+    </div>
+    <div class="process-step">
+      <span class="step-num">04</span>
+      <h3 class="step-title">Prototyping & Validation</h3>
+      <p class="step-desc">Prototype build coordinated and hardware brought up systematically. RF performance measured. Power consumption validated. Issues documented and dispositioned before any spin decision.</p>
+      <span class="step-arrow">→</span>
+    </div>
+    <div class="process-step">
+      <span class="step-num">05</span>
+      <h3 class="step-title">Production Readiness</h3>
+      <p class="step-desc">Final design packaged for manufacture with assembly drawings, test procedures, and CM handoff documentation. We stay engaged through first production run to catch any yield issues early.</p>
+      <span class="step-arrow">→</span>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDY -->
+<section id="case-study">
+  <div class="section-header fade-up">
+    <p class="section-tag">Case Study</p>
+    <span class="section-num">(05)</span>
+  </div>
+  <div class="case-grid fade-up">
+    <div>
+      <span class="case-label">Project — IoT Agricultural Monitoring</span>
+      <h2 class="case-title">Long-range sensing at a five-year deployment horizon.</h2>
+      <p class="case-body">The brief was to monitor tree health across large agricultural sites using vibration sensing — detecting changes in trunk resonance as a proxy for structural integrity and disease onset. The hardware needed to run for five years on a single battery pack, survive outdoor installation, and transmit reliably across distances beyond the range of conventional wireless protocols.</p>
+      <p class="case-body">We designed a multi-layer PCB integrating a low-power microcontroller, precision accelerometer, and LoRa radio module. The RF layout was carefully optimised to maximise transmit efficiency within the regulatory power limit, with the antenna positioned and tuned for performance in proximity to the wooden mounting substrate. Aggressive sleep scheduling in hardware and firmware achieved sub-10 µA average current draw — validating the five-year runtime target on a standard LiSOCl₂ cell.</p>
+      <div class="case-result">
+        <span class="case-result-label">Result</span>
+        <p class="case-result-text">Production-ready hardware validated at range against gateway, achieving 4.2 km line-of-sight in field testing. First deployment units installed on schedule. Five-year runtime confirmed by power modelling against measured consumption figures.</p>
+      </div>
+    </div>
+    <div class="case-meta-block">
+      <div class="case-meta-item">
+        <span class="case-meta-label">Sector</span>
+        <span class="case-meta-value">Agricultural IoT / Industrial</span>
+      </div>
+      <div class="case-meta-item">
+        <span class="case-meta-label">Disciplines</span>
+        <span class="case-meta-value">RF design, multi-layer PCB layout, low-power architecture, DFM</span>
+      </div>
+      <div class="case-meta-item">
+        <span class="case-meta-label">Wireless</span>
+        <span class="case-meta-value">LoRa 868 MHz, Wi-Fi 6, Bluetooth 5.2</span>
+      </div>
+      <div class="case-meta-item">
+        <span class="case-meta-label">Form factor</span>
+        <span class="case-meta-value">IP67-rated enclosure, 5-year field deployment</span>
+      </div>
+      <div class="case-meta-item">
+        <span class="case-meta-label">Key challenge</span>
+        <span class="case-meta-value">Sub-10 µA average current at full LoRa transmission capability, RF performance validated on wooden substrate</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-inner fade-up">
+    <div>
+      <h2 class="section-title">Ready to take your product to production?</h2>
+      <p class="section-body">Whether you're starting from a napkin sketch or inheriting an existing design with problems to fix, we can help. We take on commercial electronics design projects across the UK and internationally.</p>
+      <p class="cta-note">We respond to all enquiries within one business day.</p>
+    </div>
+    <div style="flex-shrink: 0;">
+      <a href="mailto:info@ecadesign.co.uk" class="cta-cta-link">info@ecadesign.co.uk &nbsp;↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header fade-up">
+    <p class="section-tag">Contact</p>
+    <span class="section-num">(06)</span>
+  </div>
+  <div class="contact-grid">
+    <div class="fade-up">
+      <h2 class="section-title">Let's talk about your project.</h2>
+      <p class="section-body">Tell us what you're building, where you are in the process, and what your timeline looks like. We'll give you a straight answer on whether we're the right fit.</p>
+      <a href="mailto:info@ecadesign.co.uk" class="contact-cta-link">Get in contact &nbsp;↗</a>
+    </div>
+    <div class="fade-up">
+      <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);margin-bottom:0;">Find us online</p>
+      <div class="social-list">
+        <a href="https://www.linkedin.com/company/ecadesign" target="_blank" class="social-link">
+          <span class="social-label">LinkedIn</span>
+          <div class="social-right">
+            <span class="social-handle">ECA Design</span>
+            <span class="social-arr">↗</span>
+          </div>
+        </a>
+        <a href="https://www.instagram.com/ecadesign" target="_blank" class="social-link">
+          <span class="social-label">Instagram</span>
+          <div class="social-right">
+            <span class="social-handle">@ecadesign</span>
+            <span class="social-arr">↗</span>
+          </div>
+        </a>
+        <a href="mailto:info@ecadesign.co.uk" class="social-link">
+          <span class="social-label">Email</span>
+          <div class="social-right">
+            <span class="social-handle">info@ecadesign.co.uk</span>
+            <span class="social-arr">↗</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">
+    <span class="footer-brand">ECA Design</span>
+    <span class="footer-copy">© 2025 ECA Design</span>
+    <span class="footer-copy">info@ecadesign.co.uk</span>
+  </div>
+  <div class="footer-right">
+    <a href="https://www.linkedin.com/company/ecadesign" target="_blank" class="footer-soc">LinkedIn</a>
+    <a href="https://www.instagram.com/ecadesign" target="_blank" class="footer-soc">Instagram</a>
+    <a href="mailto:info@ecadesign.co.uk" class="footer-cta">Start a project</a>
+  </div>
+</footer>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">Commercial Electronics Design</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">PCB Design for Production</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Electronics Product Development</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">RF Engineering</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Design for Manufacture</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">EMC Compliance</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">IoT Systems</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Commercial Electronics Design</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">PCB Design for Production</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Electronics Product Development</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">RF Engineering</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">Design for Manufacture</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">EMC Compliance</span><span class="ticker-dot">·</span>
+    <span class="ticker-item">IoT Systems</span><span class="ticker-dot">·</span>
+  </div>
+</div>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.fade-up, .specialties-grid, .problems-grid, .process-steps').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.specialty-card').forEach((card, i) => {
+    card.style.transitionDelay = `${i * 0.1}s`;
+  });
+
+  document.querySelectorAll('.problem-card').forEach((card, i) => {
+    card.style.transitionDelay = `${i * 0.1}s`;
+  });
+
+  document.querySelectorAll('.process-step').forEach((step, i) => {
+    step.style.transitionDelay = `${i * 0.08}s`;
+  });
+</script>
+</body>
+</html>

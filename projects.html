@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VR5VFBVV13"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-VR5VFBVV13');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electronics Design Case Studies & PCB Projects | ECA Design</title>
+  <meta name="description" content="Explore our portfolio of electronics design projects across the UK. Featuring medical devices, industrial IoT, and RF systems designed for manufacture and compliance.">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "ECA Design",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "West London",
+      "addressCountry": "GB"
+    },
+    "url": "https://ecadesign.co.uk",
+    "serviceType": ["Electronics Design", "PCB Layout", "IoT Engineering"],
+    "areaServed": "United Kingdom",
+    "description": "Expert electronics design and PCB layout consultancy based in West London, serving the UK wide. Specialist in medical IoT, RF systems, and Altium Designer workflows."
+  }
+  </script>
+
+  <link rel="icon" href="assets/images/favpic.svg" type="image/svg+xml">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+    
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #f8f8f6;
+      --gray: #8a8a8a;
+      --border: rgba(255, 255, 255, 0.1);
+    }
+
+    body {
+      font-family: 'Inter', Helvetica Neue, sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 300;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2.5rem; /* Ensure this matches index */
+      background: rgba(10, 10, 10, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 30px; /* Changed from 20px */
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+      z-index: 400;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 12px; /* Changed from 10px */
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+      opacity: 0.8; /* Changed from 0.6 */
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+
+    /* ── HAMBURGER BUTTON ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 5px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      z-index: 400;
+    }
+    .nav-hamburger span {
+      display: block;
+      height: 1px;
+      background: var(--white);
+      transition: all 0.3s ease;
+      transform-origin: right center;
+    }
+    .nav-hamburger span:nth-child(1) { width: 24px; }
+    .nav-hamburger span:nth-child(2) { width: 16px; }
+    .nav-hamburger span:nth-child(3) { width: 20px; }
+    .nav-hamburger.open span:nth-child(1) { transform: rotate(-45deg); width: 22px; }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: rotate(45deg); width: 22px; }
+
+    /* ── MOBILE MENU OVERLAY ── */
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2rem 2rem 6rem;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-12px);
+      transition: all 0.35s ease;
+    }
+    .mobile-menu.open { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .mobile-nav-list { list-style: none; border-top: 1px solid rgba(255,255,255,0.1); }
+    .mobile-nav-list a {
+      display: flex;
+      justify-content: space-between;
+      padding: 1.4rem 0;
+      font-size: 1.8rem;
+      color: var(--white);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .mobile-menu-footer { margin-top: 2.5rem; display: flex; justify-content: space-between; align-items: flex-end; }
+    .mobile-menu-contact { display: flex; flex-direction: column; gap: 0.4rem; }
+    .mobile-menu-contact span { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+    .mobile-menu-contact a { font-size: 12px; color: rgba(255,255,255,0.6); text-decoration: none; }
+    .mobile-cta { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--black); background: var(--white); padding: 0.85rem 1.5rem; text-decoration: none; font-weight: 500; }
+
+    /* ── PROJECTS HERO ── */
+    #hero {
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 2.5rem 6rem;
+      position: relative;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.55;
+      filter: grayscale(0.1) contrast(1.05);
+    }
+
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, var(--black) 5%, rgba(10,10,10,0.5) 50%, rgba(10,10,10,0.2) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .hero-headline {
+      font-size: clamp(2.5rem, 7vw, 6rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      max-width: 18ch;
+      margin-bottom: 2rem;
+    }
+
+    /* ── METRICS GRID ── */
+    .metrics-container {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: #0f0f0f;
+    }
+
+    .metrics-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .metric-card {
+      padding: 4rem 2.5rem;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .metric-card:last-child { border-right: none; }
+
+    .metric-value {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--white);
+    }
+
+    .metric-value em {
+      font-style: normal;
+      color: var(--gray);
+      font-size: 1.5rem;
+      margin-left: 0.25rem;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    /* ── CHRONOLOGICAL CASE STUDY ── */
+    .narrative-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 10rem 2.5rem;
+    }
+
+    .narrative-step {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 6rem;
+      margin-bottom: 12rem;
+      align-items: center;
+    }
+
+    .narrative-step:last-child { margin-bottom: 0; }
+    .narrative-step:nth-child(even) { grid-template-columns: 1.2fr 0.8fr; }
+    .narrative-step:nth-child(even) .step-text { grid-column: 2; }
+    .narrative-step:nth-child(even) .step-media { grid-column: 1; grid-row: 1; }
+
+    .step-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .step-tag {
+      font-size: 10px;
+      letter-spacing: 0.20em;
+      color: var(--gray);
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    .step-title {
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.5rem;
+    }
+
+    .step-desc {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.55);
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    .step-media {
+      width: 100%;
+      aspect-ratio: 16/10;
+      background: #141414;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      filter: grayscale(1);
+      opacity: 0.4;
+      transition: all 1s ease;
+    }
+
+    .narrative-step.active .step-media {
+      filter: grayscale(0);
+      opacity: 1;
+    }
+
+    .step-media img,
+    .step-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── SECURE NDA REGISTRY ── */
+    .nda-container {
+      border-top: 1px solid var(--border);
+      background: #050505;
+    }
+
+    .nda-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 8rem 2.5rem 12rem;
+    }
+
+    .nda-header {
+      margin-bottom: 5rem;
+    }
+
+    .nda-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    .ledger-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2rem;
+    }
+
+    .ledger-row {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+
+    .ledger-row:hover { background: rgba(255,255,255,0.01); }
+
+    .ledger-cell {
+      padding: 2rem 1rem;
+      font-size: 14px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .ledger-cell.id {
+      font-size: 11px;
+      font-family: monospace;
+      color: var(--gray);
+    }
+
+    .ledger-cell.secure {
+      font-family: monospace;
+      letter-spacing: 2px;
+      color: rgba(255, 255, 255, 0.15);
+    }
+
+    .tag-mini {
+      font-size: 9px;
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.5rem;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-right: 0.35rem;
+      display: inline-block;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 6rem 2.5rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      background: var(--black);
+    }
+    .footer-cta {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: var(--black);
+      background: var(--white);
+      padding: 1.2rem 2.5rem;
+      text-decoration: none;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    /* ── RESPONSIVE ADAPTATIONS ── */
+    @media (max-width: 768px) {
+      nav { padding: 1.25rem 1.5rem; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+
+      #hero { min-height: 65vh; padding: 0 1.5rem 4rem; }
+      .metrics-grid { grid-template-columns: 1fr; }
+      .metric-card { border-right: none; border-bottom: 1px solid var(--border); padding: 2.5rem 1.5rem; }
+      .metric-card:last-child { border-bottom: none; }
+
+      .narrative-section { padding: 6rem 1.5rem; }
+      .narrative-step, .narrative-step:nth-child(even) { grid-template-columns: 1fr; gap: 2.5rem; margin-bottom: 6rem; }
+      .narrative-step .step-text, .narrative-step:nth-child(even) .step-text { grid-column: 1; }
+      .narrative-step .step-media, .narrative-step:nth-child(even) .step-media { grid-column: 1; }
+
+      .nda-section { padding: 5rem 1.5rem 8rem; }
+      .ledger-hide-mobile { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="mobile-menu" id="mobileMenu">
+  <nav style="position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;">
+    <a href="index.html" class="nav-logo" style="font-size:24px;">ECA.</a>
+  </nav>
+  <ul class="mobile-nav-list">
+    <li><a href="process.html" onclick="closeMenu()">Our Process ↗</a></li>
+    <li><a href="projects.html" onclick="closeMenu()">Projects ↗</a></li>
+    <li><a href="journal.html" onclick="closeMenu()">Journal ↗</a></li>
+    <li><a href="index.html#contact" onclick="closeMenu()">Contact ↗</a></li>
+  </ul>
+  <div class="mobile-menu-footer">
+    <div class="mobile-menu-contact">
+      <span>Get in touch</span>
+      <a href="mailto:info@ecadesign.co.uk">info@ecadesign.co.uk</a>
+    </div>
+    <a href="mailto:info@ecadesign.co.uk" class="mobile-cta">Start a project</a>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">ECA.</a>
+  <ul class="nav-links">
+    <li><a href="process.html">Our Process</a></li>
+    <li><a href="projects.html" style="opacity: 1;">Projects</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Open menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<header id="hero">
+  <div class="hero-bg">
+    <img src="assets/images/peb-render.webp" alt="ECA Consumer Focus Timer final product design layout 3D render">
+  </div>
+  <div class="hero-content">
+    <span class="hero-label">Case Study 01 / Consumer Electronics</span>
+    <h1 class="hero-headline">The Consumer Focus Timer Architecture.</h1>
+  </div>
+</header>
+
+<section class="metrics-container">
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <span class="metric-value">30<em>sec</em></span>
+      <span class="metric-label">Assembly Time <span style="color:var(--white)">↓ from 15m</span></span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-value">£1.00</span>
+      <span class="metric-label">Component BOM Cost <span style="color:var(--white)">↓ from £5</span></span>
+    </div>
+    <div class="metric-card">
+      <span class="metric-value">Ultra</span>
+      <span class="metric-label">Low-Power Sleep Optimization</span>
+    </div>
+  </div>
+</section>
+
+<main class="narrative-section">
+
+  <section class="narrative-step">
+    <div class="step-text">
+      <span class="step-tag">Phase 01 / Functional Proof</span>
+      <h2 class="step-title">Hands-On Prototype</h2>
+      <p class="step-desc">
+        Development initiated with a structural alpha prototype focused on validating basic driving algorithms and circuit paths. Aggressive verification benchmarks isolated current consumption leakages and established stable firmware foundations prior to hardware finalization loops.
+      </p>
+    </div>
+    <div class="step-media">
+      <img src="assets/images/peb-proto.webp" alt="Hands-on first operational hardware wireframe layout">
+    </div>
+  </section>
+
+  <section class="narrative-step">
+    <div class="step-text">
+      <span class="step-tag">Phase 02 / Topology Engineering</span>
+      <h2 class="step-title">PCB Optimization & Layout</h2>
+      <p class="step-desc">
+        Migrating structural proof vectors into a manufacturing-ready multi-layer ecosystem. Path trace structures were refined to eliminate component footprints, lowering component bill of materials (BOM) values down to a target parameters envelope while supporting a clean, circular surface mount display interface.
+      </p>
+    </div>
+    <div class="step-media">
+      <img src="assets/images/pebrender.webp" alt="Multi-layer PCB Gerber routing trace layout render">
+    </div>
+  </section>
+
+  <section class="narrative-step">
+    <div class="step-text">
+      <span class="step-tag">Phase 03 / Mechanical Integrity</span>
+      <h2 class="step-title">Final 3D-Printed Assembly</h2>
+      <p class="step-desc">
+        The complete product enclosure assembly cycle was engineered for flawless structural handshakes. Mechanical mounting profiles were re-designed to drop manual production requirements from 15 minutes down to an agile 30-second snap-fit layout, optimized directly for rapid scaling.
+      </p>
+    </div>
+    <div class="step-media">
+      <video src="assets/images/final.webm" autoplay loop muted playsinline aria-label="Demonstration video of the final consumer focus timer prototype interaction"></video>
+    </div>
+  </section>
+
+</main>
+
+<section class="nda-container">
+  <div class="nda-section">
+    <div class="nda-header">
+      <span class="hero-label">Protected Assets</span>
+      <h2 class="nda-title">Confidential Implementations</h2>
+      <p style="color: var(--gray); font-size: 14px; max-width: 55ch; font-weight: 300;">
+        A significant balance of our engineering pipelines operates under rigorous proprietary guidelines. While physical imagery remains legally redacted, our operational architecture capabilities remain validated.
+      </p>
+    </div>
+
+    <table class="ledger-table">
+      <thead>
+        <tr style="border-bottom: 1px solid var(--border); text-align: left;">
+          <th class="hero-label" style="padding-bottom: 1rem;">ID</th>
+          <th class="hero-label" style="padding-bottom: 1rem;">Sector / Classification</th>
+          <th class="hero-label ledger-hide-mobile" style="padding-bottom: 1rem;">Secure Status</th>
+          <th class="hero-label" style="padding-bottom: 1rem; text-align: right;">Parameters Spectrum</th>
+        </tr>
+      </thead>
+<tbody>
+        <tr class="ledger-row">
+          <td class="ledger-cell id">ECA-082</td>
+          <td class="ledger-cell">
+            <strong>Industrial IoT Gateway & Sensor Node</strong><br>
+            <span class="tag-mini">LoRaWAN</span>
+            <span class="tag-mini">Sub-GHz RF</span>
+            <span class="tag-mini">UKCA Compliance</span>
+          </td>
+          <td class="ledger-cell secure ledger-hide-mobile">[ LOCKED UNDER NDA ]</td>
+          <td class="ledger-cell" style="text-align: right; font-size: 13px; color: var(--gray);">
+            Custom <strong>Altium</strong> multi-layer stackup; optimized for UK-wide LPWAN deployment. <br>
+            <em>Outcome: 5-Year battery lifecycle with precision RF matching.</em>
+          </td>
+        </tr>
+
+        <tr class="ledger-row">
+          <td class="ledger-cell id">ECA-094</td>
+          <td class="ledger-cell">
+            <strong>Clinical-Grade UVC Control Systems</strong><br>
+            <span class="tag-mini">Medical ISO 13485</span>
+            <span class="tag-mini">MIPI-CSI</span>
+            <span class="tag-mini">EMC Shielding</span>
+          </td>
+          <td class="ledger-cell secure ledger-hide-mobile">[ LOCKED UNDER NDA ]</td>
+          <td class="ledger-cell" style="text-align: right; font-size: 13px; color: var(--gray);">
+            High-speed differential pair routing with <strong>Controlled Impedance</strong>. <br>
+            <em>Outcome: Rapid West London-based prototyping for NHS-adjacent hardware.</em>
+          </td>
+        </tr>
+
+        <tr class="ledger-row">
+          <td class="ledger-cell id">ECA-107</td>
+          <td class="ledger-cell">
+            <strong>High-Density BLE 5.2 Asset Tracker</strong><br>
+            <span class="tag-mini">Rigid-Flex PCB</span>
+            <span class="tag-mini">SoC Integration</span>
+            <span class="tag-mini">DFM Optimized</span>
+          </td>
+          <td class="ledger-cell secure ledger-hide-mobile">[ LOCKED UNDER NDA ]</td>
+          <td class="ledger-cell" style="text-align: right; font-size: 13px; color: var(--gray);">
+            Micro-form factor <strong>HDI (High-Density Interconnect)</strong> design for UK manufacturing. <br>
+            <em>Outcome: Integrated Lithium management with ultra-low-quiescent current.</em>
+          </td>
+        </tr>
+
+        <tr class="ledger-row">
+          <td class="ledger-cell id">ECA-112</td>
+          <td class="ledger-cell">
+            <strong>High-Current Power Distribution Module</strong><br>
+            <span class="tag-mini">Automotive</span>
+            <span class="tag-mini">Thermal Management</span>
+            <span class="tag-mini">3oz Copper</span>
+          </td>
+          <td class="ledger-cell secure ledger-hide-mobile">[ LOCKED UNDER NDA ]</td>
+          <td class="ledger-cell" style="text-align: right; font-size: 13px; color: var(--gray);">
+            Heavy copper PCB engineering for EV-sector startups in the <strong>M4 Corridor/West London</strong>. <br>
+            <em>Outcome: 98% efficiency via thermal via-array optimization.</em>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <a href="mailto:info@ecadesign.co.uk" class="footer-cta">Start an Engineering Consultation</a>
+</footer>
+
+<script>
+  /* ── INTERACTIVE NAVIGATION OVERLAY LOGIC ── */
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const btn  = document.getElementById('hamburger');
+    const open = menu.classList.toggle('open');
+    btn.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  function closeMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const btn  = document.getElementById('hamburger');
+    menu.classList.remove('open');
+    btn.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* Close on Escape key */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeMenu();
+  });
+
+  /* ── SCROLL GRADUAL REVEAL ANIMATION (MATCHES PROCESS OVERLAYS) ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+      }
+    });
+  }, { threshold: 0.25 });
+
+  document.querySelectorAll('.narrative-step').forEach(step => observer.observe(step));
+</script>
+</body>
+</html>

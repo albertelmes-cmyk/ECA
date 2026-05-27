@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Engineering Journal — ECA Design</title>
+  <link rel="icon" href="favpic.svg" type="image/svg+xml">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+
+    :root {
+      --black: #0a0a0a;
+      --white: #f8f8f6;
+      --gray: #8a8a8a;
+      --light-gray: #e0e0e0;
+      --border: #d0d0d0;
+      --accent: #222;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2.5rem;
+      background: rgba(248, 248, 246, 0.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--black);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .back-link {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--gray);
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--black); }
+
+    /* Blog Header */
+    header.post-header {
+      padding: 12rem 2.5rem 4rem;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .post-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .post-title {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+    }
+
+    .post-meta {
+      display: flex;
+      gap: 3rem;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+    }
+
+    .meta-item span {
+      display: block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      margin-bottom: 0.25rem;
+    }
+
+    .meta-item p {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* Content Area */
+    article.post-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 2.5rem 8rem;
+    }
+
+    .post-content p {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 2rem;
+      font-weight: 300;
+    }
+
+    .post-content h2 {
+      font-size: 28px;
+      font-weight: 400;
+      margin: 4rem 0 1.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .post-content h3 {
+      font-size: 20px;
+      font-weight: 500;
+      margin: 2.5rem 0 1rem;
+    }
+
+    .post-content blockquote {
+      border-left: 3px solid var(--black);
+      padding: 1rem 0 1rem 2rem;
+      margin: 3rem 0;
+      font-style: italic;
+      font-size: 22px;
+      color: var(--gray);
+    }
+
+    .post-content figure {
+      margin: 4rem -5rem;
+      background: #eee;
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    
+    /* Placeholder for technical diagrams or board shots */
+    .figure-placeholder {
+        color: var(--gray);
+        font-size: 11px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+    }
+
+    .post-content ul {
+      margin-bottom: 2rem;
+      padding-left: 1.5rem;
+    }
+
+    .post-content li {
+      font-size: 17px;
+      color: #444;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Footer / CTA */
+    .post-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 4rem;
+      margin-top: 6rem;
+      text-align: center;
+    }
+
+    .cta-box {
+      background: var(--black);
+      color: var(--white);
+      padding: 4rem 2rem;
+    }
+
+    .cta-box h3 {
+      font-size: 2rem;
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--white);
+      color: var(--black);
+      padding: 1rem 2.5rem;
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      header.post-header { padding-top: 8rem; }
+      .post-content figure { margin: 2rem 0; }
+      .post-meta { flex-direction: column; gap: 1.5rem; }
+      article.post-content { padding: 0 1.5rem 5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">ECA.</a>
+  <a href="index.html#projects" class="back-link">← Back to Projects</a>
+</nav>
+
+
+<header class="post-header">
+  <span class="post-label">Engineering Journal — Vol. 03</span>
+  <h1 class="post-title">Hardening the Board: Beyond Buffer Stocks in Electronic Design.</h1>
+  
+  <div class="post-meta">
+    <div class="meta-item">
+      <span>Date</span>
+      <p>April 30, 2026</p>
+    </div>
+    <div class="meta-item">
+      <span>Category</span>
+      <p>Systems Architecture</p>
+    </div>
+    <div class="meta-item">
+      <span>Reading Time</span>
+      <p>12 Min Read</p>
+    </div>
+  </div>
+</header>
+
+<article class="post-content">
+  <p>Warehouse shelves full of safety stock aren't a strategy; they’re a confession of failure in design. After twenty years in global electronics manufacturing, I’ve seen the same cycle repeat: a "black swan" event hits, lead times for a critical 10-cent LDO spike to 52 weeks, and entire production lines grind to a halt while engineers scramble to redesign layouts. True resilience isn't bought in the spot market—it is etched into the copper of the PCB.</p>
+
+  <p>Design-for-Resilience (DfR) shifts the burden of supply chain stability from the procurement team to the architect. We are moving past the era of optimized BOMs toward an era of <strong>liquid hardware</strong>—designs that can pivot without a respin.</p>
+
+  <h2>The Myth of the Optimized BOM</h2>
+  <p>In the "Just-in-Time" era, we were taught to shave every penny by choosing the smallest, most integrated, most specific component for the job. Today, that specificity is a liability. If your design relies on a single-source SoC with a proprietary footprint, you haven't built a product; you’ve built a hostage situation. Resilience requires a fundamental shift in how we value component selection.</p>
+
+  <h3>Pillar 1: Component Homogenization and the BOM Complexity Index</h3>
+  <p>Complexity is the enemy of procurement leverage. We utilize a "BOM Complexity Index" to evaluate the risk of a design. If you have twelve different values of 0402 ceramic capacitors, you have twelve unique failure points. In a DfR workflow, we homogenize.</p>
+  <ul>
+    <li><strong>Bulk Leverage:</strong> Standardizing on a 0.1µF and a 10µF rail across the entire board, even if a 0.01µF would "technically" suffice, increases your purchasing volume.</li>
+    <li><strong>The 80/20 Rule of Passives:</strong> Aim for 80% of your passives to be drawn from a pool of just 20 standard values to reduce overhead during SMT assembly.</li>
+  </ul>
+
+  <h2>Technical Strategy: Universal Footprinting</h2>
+  <p>The most effective way to harden a board is to design for footprint overlap. Rather than committing to a single package, we design <strong>Multi-Path layouts</strong>. This involves overlapping pads for critical ICs like voltage regulators or flash memory so the board is physically compatible with multiple part numbers simultaneously.</p>
+
+  <h3>The "Nested" Regulator</h3>
+  <p>We frequently lay out an SOT-23 footprint directly inside the perimeter of an SOT-223 or DPAK. If a high-efficiency primary part goes out of stock, a larger, older, and often more available "legacy" part can be soldered to the same location. This avoids a total board revision when a single line-item disappears from the market.</p>
+
+  <h3>VQFN Pitch Flexibility</h3>
+  <p>For microcontrollers, we often design "Hybrid Lands." By extending pads slightly, a single PCB pattern can often accommodate both a 0.5mm and 0.65mm pitch variant of the same family. In some cases, we can even bridge the gap between a QFN and a QFP if the mechanical envelope permits, ensuring the assembly line never stops for want of a specific package type.</p>
+
+  <h3>Pillar 2: The "Active-Passive" Balance</h3>
+  <p>There is a dangerous allure to cutting-edge silicon. Junior architects often chase the latest SoC because it integrates five discrete functions. But if that specific wafer process is deprioritized, your product is dead. Resilient architecture favors <strong>"Legacy-Stable" Silicon</strong>—components produced across multiple fabs on mature nodes (e.g., 40nm or 65nm) where production yields are nearly 100%.</p>
+
+  <h3>Pillar 3: Firmware-Agile Hardware</h3>
+  <p>Hardware resilience is useless if the firmware is brittle. We no longer write code for a "chip"; we write for a <strong>Hardware Abstraction Layer (HAL)</strong>. By strictly decoupling the application logic from the peripheral drivers, we enable "chip-swapping" at the assembly level.</p>
+  <ul>
+    <li><strong>Pin-Mapping Strategy:</strong> We identify "Common Minimum Pinouts" and route the PCB to the intersection of functions between a primary MCU and a secondary equivalent.</li>
+    <li><strong>Automated Rebuilds:</strong> CI/CD pipelines should compile binaries for multiple target MCUs simultaneously, ensuring firmware is validated and ready to flash the moment a hardware pivot is required.</li>
+  </ul>
+
+  <hr />
+
+  <h2>The Resilience Checklist</h2>
+  <p>Before moving to production, every design must be interrogated against these five criteria:</p>
+  <ul>
+    <li><strong>Dual-Source Footprints:</strong> Does every critical IC have a secondary footprint option designed into the copper?</li>
+    <li><strong>BOM Concentration:</strong> Have unique resistor and capacitor values been reduced to the absolute functional minimum?</li>
+    <li><strong>Pin-Compatible Backups:</strong> Is there a secondary MCU or Transceiver that can be dropped in with minimal firmware refactoring?</li>
+    <li><strong>Legacy Nodes:</strong> Are power and analog components built on mature, multi-fab processes rather than single-source cutting-edge nodes?</li>
+    <li><strong>Thermal Headroom:</strong> Does the "Option B" footprint have the thermal vias necessary to handle a potentially less efficient backup component?</li>
+  </ul>
+
+  <p>Engineering for the boardroom means understanding that a design is only as good as your ability to manufacture it. Hardening the board isn't about predicting the next crisis—it’s about making the next crisis irrelevant to your bottom line.</p>
+
+  <div class="post-footer">
+    <div class="cta-box">
+      <h3>Is your architecture crisis-proof?</h3>
+      <p style="color: rgba(255,255,255,0.6); margin-bottom: 2rem;">We conduct deep-dive Design-for-Resilience audits to ensure your product survives the next supply chain shock.</p>
+      <a href="mailto:info@ecadesign.co.uk" class="cta-btn">Start a Conversation</a>
+    </div>
+  </div>
+</article>
+
+</body>
+</html>

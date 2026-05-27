@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Engineering Journal — ECA Design</title>
+  <link rel="icon" href="favpic.svg" type="image/svg+xml">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+
+    :root {
+      --black: #0a0a0a;
+      --white: #f8f8f6;
+      --gray: #8a8a8a;
+      --light-gray: #e0e0e0;
+      --border: #d0d0d0;
+      --accent: #222;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2.5rem;
+      background: rgba(248, 248, 246, 0.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--black);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .back-link {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--gray);
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--black); }
+
+    /* Blog Header */
+    header.post-header {
+      padding: 12rem 2.5rem 4rem;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .post-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .post-title {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+    }
+
+    .post-meta {
+      display: flex;
+      gap: 3rem;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+    }
+
+    .meta-item span {
+      display: block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      margin-bottom: 0.25rem;
+    }
+
+    .meta-item p {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* Content Area */
+    article.post-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 2.5rem 8rem;
+    }
+
+    .post-content p {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 2rem;
+      font-weight: 300;
+    }
+
+    .post-content h2 {
+      font-size: 28px;
+      font-weight: 400;
+      margin: 4rem 0 1.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .post-content h3 {
+      font-size: 20px;
+      font-weight: 500;
+      margin: 2.5rem 0 1rem;
+    }
+
+    .post-content blockquote {
+      border-left: 3px solid var(--black);
+      padding: 1rem 0 1rem 2rem;
+      margin: 3rem 0;
+      font-style: italic;
+      font-size: 22px;
+      color: var(--gray);
+    }
+
+    .post-content figure {
+      margin: 4rem -5rem;
+      background: #eee;
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    
+    /* Placeholder for technical diagrams or board shots */
+    .figure-placeholder {
+        color: var(--gray);
+        font-size: 11px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+    }
+
+    .post-content ul {
+      margin-bottom: 2rem;
+      padding-left: 1.5rem;
+    }
+
+    .post-content li {
+      font-size: 17px;
+      color: #444;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Footer / CTA */
+    .post-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 4rem;
+      margin-top: 6rem;
+      text-align: center;
+    }
+
+    .cta-box {
+      background: var(--black);
+      color: var(--white);
+      padding: 4rem 2rem;
+    }
+
+    .cta-box h3 {
+      font-size: 2rem;
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--white);
+      color: var(--black);
+      padding: 1rem 2.5rem;
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      header.post-header { padding-top: 8rem; }
+      .post-content figure { margin: 2rem 0; }
+      .post-meta { flex-direction: column; gap: 1.5rem; }
+      article.post-content { padding: 0 1.5rem 5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">ECA.</a>
+  <a href="index.html#projects" class="back-link">← Back to Projects</a>
+</nav>
+
+<header class="post-header">
+  <span class="post-label">Engineering Journal — Vol. 02</span>
+  <h1 class="post-title">From Breadboard to Boardroom: Designing Reliable Power with LDOs.</h1>
+  
+  <div class="post-meta">
+    <div class="meta-item">
+      <span>Date</span>
+      <p>April 29, 2026</p>
+    </div>
+    <div class="meta-item">
+      <span>Category</span>
+      <p>Hardware Design</p>
+    </div>
+    <div class="meta-item">
+      <span>Reading Time</span>
+      <p>7 Min Read</p>
+    </div>
+  </div>
+</header>
+
+<article class="post-content">
+  <p>When moving from a breadboard prototype to a production-ready PCB, power design quickly becomes one of the most critical—and often underestimated—parts of the system. On development boards, regulation is handled for you. In a real product, it becomes your responsibility. In our own projects, we’ve found that many early failures weren’t due to logic or firmware, but to unstable or noisy power rails that only revealed themselves during testing.</p>
+
+
+
+  <h2>Breaking Through the “Arduino Wall”</h2>
+  <p>Development boards make power design feel invisible. You plug in USB or a battery, and everything works. But when we transitioned one of our prototypes onto a custom PCB, that abstraction disappeared immediately. Regulators that seemed “good enough” introduced noise, consumed too much space, or complicated the bill of materials.</p>
+
+  <blockquote>
+    "Power design is easy to ignore—right up until it’s the reason your product fails."
+  </blockquote>
+
+  <h3>What We Ran Into</h3>
+  <ul>
+    <li><strong>Bulky Regulation:</strong> Dev board power sections don’t translate well to compact products. Once enclosure constraints come into play, every component footprint matters.</li>
+    <li><strong>Noisy Rails:</strong> Switching regulators introduced ripple that interfered with sensors and RF modules. These issues didn’t appear until late-stage testing.</li>
+    <li><strong>BOM Complexity:</strong> Recreating switching supplies properly added inductors, diodes, and extra passives—raising both cost and assembly risk.</li>
+  </ul>
+
+  <h3>Why We Moved to LDOs</h3>
+  <p>To simplify designs and improve reliability, we began using Low Dropout (LDO) regulators wherever low noise mattered. Conceptually, we treat an LDO as a controlled variable resistor—continuously adjusting itself to maintain a stable output voltage. That simplicity translates directly into fewer surprises during bring-up.</p>
+
+
+  <h3>Where LDOs Made the Biggest Difference</h3>
+  <ul>
+    <li><strong>RF Stability:</strong> In one design, isolating an RF module behind an LDO removed intermittent communication issues that were difficult to diagnose.</li>
+    <li><strong>Cleaner Sensor Data:</strong> Analog readings became significantly more stable once switching noise was removed from the rail.</li>
+    <li><strong>Predictable Behaviour:</strong> Fewer edge-case bugs during validation, especially under varying load conditions.</li>
+  </ul>
+
+  <h3>Thermal Reality: The Trade-Off</h3>
+  <p>LDOs achieve clean regulation by dissipating excess voltage as heat. We learned this the hard way in an early revision where we dropped 12V directly to 3.3V. Even at modest current, the regulator overheated and caused instability. Since then, we always calculate power dissipation early:</p>
+
+  <p><strong>P<sub>loss</sub> = (V<sub>in</sub> − V<sub>out</sub>) × I</strong></p>
+
+  <p>If that number looks uncomfortable on paper, it will be worse on a real board without proper thermal design.</p>
+
+  <h3>Our LDO Selection Checklist</h3>
+  <ul>
+    <li><strong>Headroom on Current:</strong> We avoid running regulators at their limits. Adding margin improves long-term reliability.</li>
+    <li><strong>Low Dropout Voltage:</strong> Especially critical in battery-powered designs where input voltage can sag.</li>
+    <li><strong>Package Matters:</strong> Small packages like SOT-23 are convenient, but thermally limited. For higher loads, we prefer packages with exposed pads.</li>
+    <li><strong>Fixed Outputs:</strong> We default to fixed-voltage LDOs where possible to reduce component count and layout complexity.</li>
+  </ul>
+
+  <h3>Layout Lessons From Real Builds</h3>
+  <ul>
+    <li><strong>Capacitor Placement:</strong> Input and output capacitors must be placed as close as possible to the regulator pins. We’ve seen instability caused by just a few centimetres of separation.</li>
+    <li><strong>DC Bias Effects:</strong> Ceramic capacitors lose effective capacitance under voltage. We now verify this during component selection rather than assuming nominal values.</li>
+    <li><strong>Thermal Vias:</strong> For higher current designs, we connect thermal pads to internal planes early in the layout process—not as a last-minute fix.</li>
+  </ul>
+
+  <p>In multiple projects, stability issues were solved not by changing components, but by correcting layout decisions. That’s why we treat power routing and placement as a first-class design step rather than an afterthought.</p>
+
+  <h3>When an LDO Isn’t Enough</h3>
+  <p>For large voltage drops, LDOs become inefficient and thermally impractical. In those cases, we use a hybrid approach: a switching buck converter to handle the bulk voltage reduction, followed by an LDO for clean, low-noise output. This combination has become a standard pattern in our higher-power designs.</p>
+
+  <p>When engineering for production, power design is not just about making something work—it’s about making it work reliably across temperature, load, and manufacturing variation. In our experience, getting this right early avoids costly board respins and significantly shortens the path to a stable product.</p>
+
+  <div class="post-footer">
+    <div class="cta-box">
+      <h3>Need a power design review?</h3>
+      <p style="color: rgba(255,255,255,0.6); margin-bottom: 2rem;">We help teams optimise power architecture, thermal performance, and PCB layout before production.</p>
+      <a href="mailto:info@ecadesign.co.uk" class="cta-btn">Start a Conversation</a>
+    </div>
+  </div>
+</article>
+
+</body>
+</html>

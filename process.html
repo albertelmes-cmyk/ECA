@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VR5VFBVV13"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-VR5VFBVV13');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electronics Design Process & DFM Workflow | ECA Design</title>
+<meta name="description" content="Explore ECA Design's electronics engineering workflow. From initial specification and proof of concept to high-speed PCB layout and UKCA/CE compliance support.">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How We Design Electronics",
+  "step": [
+    {"@type": "HowToStep", "text": "Hardware Architecture and Specification"},
+    {"@type": "HowToStep", "text": "Functional Prototyping and Validation"},
+    {"@type": "HowToStep", "text": "Schematic Capture and Engineering"},
+    {"@type": "HowToStep", "text": "Multi-layer PCB Layout and DFM"},
+    {"@type": "HowToStep", "text": "Manufacturing Support and Certification"}
+  ]
+}
+</script>
+  <link rel="icon" href="assets/images/favpic.svg" type="image/svg+xml">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+    
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #f8f8f6;
+      --gray: #8a8a8a;
+      --border: rgba(255, 255, 255, 0.1);
+    }
+
+    body {
+      font-family: 'Inter', Helvetica Neue, sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ── NAV (Same as Index) ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 300;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2.5rem;
+    }
+
+    .nav-logo {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 400;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+
+    /* ── HAMBURGER ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 5px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      position: relative;
+      z-index: 400;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      height: 1px;
+      background: var(--white);
+      transition: all 0.3s ease;
+      transform-origin: right center;
+    }
+
+    .nav-hamburger span:nth-child(1) { width: 24px; }
+    .nav-hamburger span:nth-child(2) { width: 16px; }
+    .nav-hamburger span:nth-child(3) { width: 20px; }
+
+    .nav-hamburger.open span:nth-child(1) { transform: rotate(-45deg); width: 22px; }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: rotate(45deg); width: 22px; }
+
+    /* ── MOBILE MENU OVERLAY (Same as Index) ── */
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2rem 2rem 6rem;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-12px);
+      transition: all 0.35s ease;
+    }
+
+    .mobile-menu.open { opacity: 1; pointer-events: all; transform: translateY(0); }
+
+    .mobile-nav-list { list-style: none; border-top: 1px solid rgba(255,255,255,0.1); }
+    .mobile-nav-list a {
+      display: flex;
+      justify-content: space-between;
+      padding: 1.4rem 0;
+      font-size: 1.8rem;
+      color: var(--white);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* ── HERO ── */
+    #hero {
+      height: 70vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 1.5rem;
+      background-image: 
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 1rem;
+    }
+
+    .hero-headline {
+      font-size: clamp(3rem, 10vw, 8rem);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-headline em {
+      font-style: normal;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+    }
+
+    /* ── PROCESS FLOW ── */
+    .process-flow {
+      position: relative;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2.5rem 10rem;
+    }
+
+    .flow-line {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--border);
+      transform: translateX(-50%);
+    }
+
+    .flow-progress {
+      position: absolute;
+      left: 0; top: 0; width: 1px;
+      height: 0;
+      background: var(--white);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+    }
+
+    .process-step {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      margin-bottom: 15rem;
+      align-items: center;
+    }
+
+    .step-node {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 9px;
+      height: 9px;
+      background: var(--white);
+      border-radius: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+
+    .step-content { text-align: right; }
+    .process-step:nth-child(even) .step-content { grid-column: 2; text-align: left; }
+    .process-step:nth-child(even) .step-visual { grid-column: 1; grid-row: 1; }
+
+    .step-num {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--gray);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .step-title {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+
+    .step-body {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.5);
+      max-width: 38ch;
+      margin-left: auto;
+      font-weight: 300;
+    }
+
+    .process-step:nth-child(even) .step-body { margin-left: 0; }
+
+    .step-visual {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: #111;
+      filter: grayscale(1);
+      opacity: 0.3;
+      transition: all 1.2s ease;
+      overflow: hidden;
+    }
+
+    .process-step.active .step-visual {
+      filter: grayscale(0);
+      opacity: 1;
+    }
+
+    .step-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 8rem 2.5rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-cta {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: var(--black);
+      background: var(--white);
+      padding: 1.2rem 2.5rem;
+      text-decoration: none;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    /* ── MOBILE ADAPTATION ── */
+    @media (max-width: 768px) {
+      nav { padding: 1.25rem 1.5rem; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+
+      .flow-line { left: 1.5rem; transform: none; }
+      .step-node { left: 1.5rem; transform: none; }
+
+      .process-step {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        margin-bottom: 8rem;
+      }
+
+      .step-content, 
+      .process-step:nth-child(even) .step-content {
+        text-align: left !important;
+        padding-left: 2.5rem;
+        grid-column: 1;
+      }
+
+      .step-visual, 
+      .process-step:nth-child(even) .step-visual {
+        grid-column: 1;
+        margin-left: 2.5rem;
+        width: calc(100% - 2.5rem);
+      }
+
+      .step-body { margin-left: 0 !important; }
+    }
+    
+  </style>
+</head>
+<body>
+
+<!-- MOBILE MENU OVERLAY -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-grid"></div>
+  <nav style="position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;mix-blend-mode:normal;">
+    <a href="#" class="nav-logo" style="font-size:24px;">ECA.</a>
+  </nav>
+  <ul class="mobile-nav-list">
+    <li><a href="process.html" onclick="closeMenu()">Our Process <span class="mobile-nav-arr">↗</span></a></li>
+    <li><a href="projects.html" onclick="closeMenu()">All Projects <span class="mobile-nav-arr">↗</span></a></li>
+    <li><a href="journal.html" onclick="closeMenu()">Journal <span class="mobile-nav-arr">↗</span></a></li>
+    <li><a href="index.html#contact" onclick="closeMenu()">Contact <span class="mobile-nav-arr">↗</span></a></li>
+  </ul>
+  <div class="mobile-menu-footer">
+    <div class="mobile-menu-contact">
+      <span>Get in touch</span>
+      <a href="mailto:info@ecadesign.co.uk">info@ecadesign.co.uk</a>
+    </div>
+    <a href="mailto:info@ecadesign.co.uk" class="mobile-cta">Start a project</a>
+  </div>
+</div>
+
+<!-- MAIN NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">ECA.</a>
+  <ul class="nav-links">
+    <li><a href="process.html">Our Process</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Open menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<header id="hero">
+  <p class="hero-label">The Process</p>
+  <h1 class="hero-headline">Concept to<br><em>Hardware.</em></h1>
+</header>
+
+<main class="process-flow">
+  <div class="flow-line">
+    <div class="flow-progress" id="flowProgress"></div>
+  </div>
+
+  <section class="process-step">
+    <div class="step-node"></div>
+    <div class="step-content">
+      <span class="step-num">01 / ARCHITECTURE</span>
+      <h2 class="step-title">System Architecture & Specification</h2>
+      <p class="step-body">We translate your product vision into a robust technical roadmap. This includes component selection with an eye on the UK supply chain, power budget analysis, and defining regulatory requirements (UKCA/CE) from day one.</p>
+    </div>
+    <div class="step-visual">
+      <img src="assets/images/IMG_2689.jpeg" alt="Handwritten electronics specification">
+    </div>
+  </section>
+
+  <section class="process-step">
+    <div class="step-node"></div>
+    <div class="step-content">
+      <span class="step-num">02 / VALIDATION</span>
+      <h2 class="step-title">Functional Validation & POC</h2>
+      <p class="step-body">Rapid functional prototyping to validate critical sensor interfaces and power paths. We use off-the-shelf development platforms and custom 'breadboard' PCBs to de-risk the project before committing to full-scale design.</p>
+    </div>
+    <div class="step-visual">
+      <img src="assets/images/poc.webp" alt="Electronics proof of concept with a camera">
+    </div>
+  </section>
+
+  <section class="process-step">
+    <div class="step-node"></div>
+    <div class="step-content">
+      <span class="step-num">03 / ENGINEERING</span>
+      <h2 class="step-title">Schematic Design & Engineering</h2>
+      <p class="step-body">Developing detailed schematics using KiCad. Our focus is on signal integrity, low-noise analogue paths, and industrial-grade reliability, ensuring every component is optimized for performance and longevity.</p>
+    </div>
+    <div class="step-visual">
+      <img src="assets/images/led-close.webp" alt="Macro photo of an LED on a PCB ">
+    </div>
+  </section>
+
+  <section class="process-step">
+    <div class="step-node"></div>
+    <div class="step-content">
+      <span class="step-num">04 / TOPOLOGY</span>
+      <h2 class="step-title">PCB Design</h2>
+      <p class="step-body">Expert multi-layer PCB layout with strict adherence to IPC standards. We handle complex constraints including impedance control, thermal management, and compact form factors for wearable or industrial IoT devices.</p>
+    </div>
+    <div class="step-visual">
+      <img src="assets/images/pcb.webp" alt="Render of an ESP32 PCB product">
+    </div>
+  </section>
+
+  <section class="process-step">
+    <div class="step-node"></div>
+    <div class="step-content">
+      <span class="step-num">05 / PRODUCTION</span>
+      <h2 class="step-title">DFM & Production Support</h2>
+      <p class="step-body">Seamless transition to mass production. We provide Design for Manufacture (DFM) reviews, generate full manufacturing data (Gerbers, BOM, XY), and support you through EMC pre-compliance and UKCA/CE certification.</p>
+    </div>
+    <div class="step-visual">
+      <img src="assets/images/massmanu.webp" alt="Mass produced PCBs">
+    </div>
+  </section>
+</main>
+
+<footer>
+  <a href="mailto:info@ecadesign.co.uk" class="footer-cta">START A PROJECT</a>
+</footer>
+
+<script>
+  /* ── MENU LOGIC ── */
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const btn  = document.getElementById('hamburger');
+    const open = menu.classList.toggle('open');
+    btn.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  function closeMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const btn  = document.getElementById('hamburger');
+    menu.classList.remove('open');
+    btn.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* ── PROGRESS LINE LOGIC ── */
+  const progressLine = document.getElementById('flowProgress');
+  const flowContainer = document.querySelector('.process-flow');
+
+  window.addEventListener('scroll', () => {
+    const rect = flowContainer.getBoundingClientRect();
+    const winH = window.innerHeight;
+    let progress = (winH / 2 - rect.top) / rect.height;
+    progress = Math.max(0, Math.min(1, progress));
+    progressLine.style.height = (progress * 100) + "%";
+  });
+
+  /* ── INTERSECTION OBSERVER ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll('.process-step').forEach(step => observer.observe(step));
+</script>
+</body>
+</html>

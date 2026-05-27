@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VR5VFBVV13"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-VR5VFBVV13');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — ECA Design</title>
+  <link rel="icon" href="assets/images/favpic.svg" type="image/svg+xml">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+    
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #f8f8f6;
+      --gray: #8a8a8a;
+      --border: #d0d0d0;
+      --accent: #2ecc71; /* Availability Green */
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', Helvetica Neue, sans-serif;
+      background: var(--white);
+      color: var(--black);
+      font-weight: 400;
+      overflow-x: hidden;
+    }
+
+    /* ── SHARED NAV (FROM INDEX) ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 300;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2.5rem;
+      mix-blend-mode: difference;
+    }
+
+    .nav-logo {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 400;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 5px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      z-index: 400;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      height: 1px;
+      background: var(--white);
+      transition: width 0.3s ease, transform 0.3s ease, opacity 0.2s ease;
+      transform-origin: right center;
+    }
+    .nav-hamburger span:nth-child(1) { width: 24px; }
+    .nav-hamburger span:nth-child(2) { width: 16px; }
+    .nav-hamburger span:nth-child(3) { width: 20px; }
+
+    .nav-hamburger.open span:nth-child(1) { width: 22px; transform: rotate(-45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; width: 0; }
+    .nav-hamburger.open span:nth-child(3) { width: 22px; transform: rotate(45deg); }
+
+    /* ── MOBILE MENU OVERLAY ── */
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2rem 2rem 6rem;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-12px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .mobile-menu.open { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .mobile-nav-list { list-style: none; border-top: 1px solid rgba(255,255,255,0.1); }
+    .mobile-nav-list li { border-bottom: 1px solid rgba(255,255,255,0.1); opacity: 0; transform: translateY(16px); transition: 0.3s ease; }
+    .mobile-menu.open .mobile-nav-list li { opacity: 1; transform: translateY(0); }
+    .mobile-nav-list a { display: flex; justify-content: space-between; padding: 1.4rem 0; font-size: 2rem; font-weight: 300; color: var(--white); text-decoration: none; }
+
+    /* ── CONTACT HERO ── */
+    .contact-hero {
+      padding: 12rem 2.5rem 4rem;
+      background: var(--white);
+    }
+
+    .hero-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 1rem;
+    }
+
+    .hero-headline {
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 0.95;
+    }
+
+    /* ── SPLIT GRID ── */
+    .contact-container {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 6rem;
+      padding: 2rem 2.5rem 8rem;
+    }
+
+    /* ── FORM STYLING ── */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .form-group label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--gray);
+    }
+
+    .form-group input, 
+    .form-group select, 
+    .form-group textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      padding: 0.8rem 0;
+      font-family: inherit;
+      font-size: 16px;
+      color: var(--black);
+      transition: border-color 0.3s ease;
+      outline: none;
+      border-radius: 0;
+    }
+
+    .form-group input:focus, 
+    .form-group select:focus, 
+    .form-group textarea:focus {
+      border-bottom: 2px solid var(--black);
+    }
+
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    /* NDA Toggle */
+    .nda-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    .nda-toggle input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--black);
+    }
+
+    .nda-toggle span {
+      font-size: 13px;
+      color: var(--gray);
+    }
+
+    .submit-btn {
+      align-self: flex-start;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      padding: 1.2rem 3rem;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      margin-top: 2rem;
+    }
+
+    .submit-btn:hover { opacity: 0.8; }
+
+    /* ── RIGHT COLUMN ── */
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+    }
+
+    .info-block h4 {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--gray);
+      margin-bottom: 1.5rem;
+    }
+
+    .info-link {
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: var(--black);
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.5rem;
+      transition: opacity 0.2s;
+    }
+
+    .info-link:hover { opacity: 0.6; }
+
+    .availability {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 13px;
+      color: var(--black);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(46, 204, 113, 0.4);
+    }
+
+    /* ── FADE UP ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1.25rem 1.5rem; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .contact-hero { padding: 8rem 1.5rem 2rem; }
+      .contact-container {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+        padding: 2rem 1.5rem 6rem;
+      }
+      .info-link { font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="mobile-menu" id="mobileMenu">
+  <nav style="position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;padding:1.25rem 1.5rem;">
+    <a href="index.html" class="nav-logo" style="font-size:24px;">ECA.</a>
+  </nav>
+  <ul class="mobile-nav-list">
+    <li><a href="process.html">Process</a></li>
+    <li><a href="projects.html">All Projects</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">ECA.</a>
+  <ul class="nav-links">
+    <li><a href="process.html">Our Process</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="journal.html">Journal</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<main>
+  <section class="contact-hero">
+    <p class="hero-label fade-up">Inquiry</p>
+    <h1 class="hero-headline fade-up">Start a Project.</h1>
+  </section>
+
+  <section class="contact-container">
+    <div class="fade-up" style="transition-delay: 0.1s;">
+      <form class="contact-form" id="projectForm" action="#" method="POST">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required placeholder="Full Name">
+        </div>
+
+        <div class="form-group">
+          <label for="company">Company</label>
+          <input type="text" id="company" name="company" placeholder="Company Name">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="email@example.com">
+        </div>
+
+        <div class="form-group">
+          <label for="stage">Project Stage</label>
+          <select id="stage" name="stage">
+            <option value="concept">Concept</option>
+            <option value="prototyping">Prototyping</option>
+            <option value="dfm">DFM / Production</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" required placeholder="Briefly describe your hardware requirements..."></textarea>
+        </div>
+
+        <label class="nda-toggle">
+          <input type="checkbox" name="nda_required">
+          <span>I require a Mutual NDA before sharing project specifics.</span>
+        </label>
+
+        <button type="submit" class="submit-btn">Send Brief</button>
+      </form>
+    </div>
+
+    <div class="contact-info fade-up" style="transition-delay: 0.2s;">
+      <div class="info-block">
+        <h4>Direct Email</h4>
+        <a href="mailto:info@ecadesign.co.uk" class="info-link">info@ecadesign.co.uk</a>
+      </div>
+
+      <div class="info-block">
+        <h4>Social</h4>
+        <a href="https://www.linkedin.com/company/ecadesign" target="_blank" class="info-link">LinkedIn</a>
+        <a href="https://www.instagram.com/e.c.adesign" target="_blank" class="info-link">Instagram</a>
+      </div>
+
+      <div class="info-block">
+        <h4>Current Availability</h4>
+        <div class="availability">
+          <div class="status-dot"></div>
+          <span>Accepting new briefs for Q3 2026</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  /* ── MOBILE MENU ── */
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    const btn  = document.getElementById('hamburger');
+    const open = menu.classList.toggle('open');
+    btn.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  /* ── SCROLL ANIMATIONS ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  /* ── FORM SUCCESS PLACEHOLDER ── */
+  document.getElementById('projectForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('.submit-btn');
+    btn.innerText = "Message Sent";
+    btn.style.background = "#2ecc71";
+    this.reset();
+    // In a real app: window.location.href = "thank-you.html";
+  });
+</script>
+</body>
+</html>
